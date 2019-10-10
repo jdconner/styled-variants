@@ -1,0 +1,32 @@
+{
+    "name": "styled-themer",
+    "version": "0.1.0",
+    "description": "Scalable, modularized theming for those who styled-components",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "module": "dist/index.esm.js",
+    "scripts": {
+        "build": "rollup -c",
+        "dev": "rollup -c -w",
+        "test": "node test/test.js",
+        "example": "(cd ./example && npm run start)",
+        "pretest": "npm run build"
+    },
+    "keywords": [],
+    "author": "Justin Conner",
+    "license": "MIT",
+    "devDependencies": {
+        "rollup": "^1.20.0",
+        "rollup-plugin-commonjs": "^10.0.0",
+        "rollup-plugin-node-resolve": "^5.1.0",
+        "rollup-plugin-terser": "^5.1.2",
+        "rollup-plugin-typescript": "^1.0.1",
+        "rollup-plugin-uglify": "^6.0.3",
+        "tslib": "^1.10.0",
+        "typescript": "^2.9.2"
+    },
+    "dependencies": {
+        "lodash.defaultsdeep": "^4.6.1",
+        "lodash.get": "^4.4.2"
+    }
+}
