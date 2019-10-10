@@ -6,7 +6,7 @@ import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
 
 const plugins = [
-	typescript(),
+	// typescript(), // remove comment once we support TS types
 	resolve(), // so Rollup can find deps
 	commonjs({ extensions: [".js", ".ts", ".tsx"] }), // so Rollup can convert deps to an ES module
 	terser(),
@@ -15,9 +15,9 @@ const plugins = [
 export default [
     // browser-friendly UMD build
     {
-        input: "src/index.tsx",
+        input: "src/index.js",
         output: {
-            name: "styled-themer",
+            name: "styled-variants",
             file: pkg.browser, // Doesnt exist yet?
             format: "umd",
         },
@@ -31,7 +31,7 @@ export default [
     // an array for the `output` option, where we can specify
     // `file` and `format` for each target)
     {
-        input: "src/index.tsx",
+        input: "src/index.js",
         external: [],
         plugins,
         output: [
