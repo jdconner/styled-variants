@@ -2,26 +2,40 @@
 
 import defaultsDeep from "lodash.defaultsdeep";
 
+function _isObject(value) {
+    return value != null && typeof value === "object";
+}
+
+function _isFunction(value) {
+    return value != null && typeof value === "function";
+}
+
 function theme(componentName) {
     return {
-        variants: theme.variants.bind(null, componentName),
+        variant: variant.bind(null, componentName),
     };
 }
 
-theme.variants = function(componentName, variantName, componentSheet) {
+function variant(componentName, variantName, variantStylesheet) {
     return function(props) {
-        const globalComponentSheet = props.theme[componentName];
-        const stylesheet = defaultsDeep(componentSheet, globalComponentSheet); // which do we want to take precedence?
+        const globalComponentStylesheet = props.theme[componentName] || {};
+        const stylesheet = defaultsDeep(globalComponentStylesheet, variantStylesheet); // Global takes precedence over local
 
-        const variantValue = props[variantName];
+        const variantPropValue = props[variantName];
 
         const variantSheet = defaultsDeep(
-            (variantValue && stylesheet[variantValue]) || {},
+            (variantPropValue && stylesheet[variantPropValue]) || {},
             stylesheet
         );
 
+        for (let [key, value] of Object.entries(variantSheet)) {
+            // ? Removes excess key/values that do not apply to reduce the number of styles created by styled-components
+            if (_isObject(value)) delete variantSheet[key];
+            if (_isFunction(value)) variantSheet[key] = value(props);
+        }
+
         return variantSheet;
     };
-};
+}
 
 export default theme;

@@ -1,6 +1,8 @@
 # styled-variants
 
-Scalable, modularized theming system for codebases that use [styled-components 💅](https://github.com/styled-components/styled-components) with global, local, and/or multiple variants.
+[![style: styled-components](https://img.shields.io/badge/style-%F0%9F%92%85%20styled--components-orange.svg?colorB=daa357&colorA=db748e)](https://github.com/styled-components/styled-components)
+
+Scalable, modularized theming system for codebases that use [styled-components 💅](https://github.com/styled-components/styled-components) that supports global, local and/or multiple variants.
 
 ## The Story
 
@@ -9,14 +11,17 @@ At [Remine](https://remine.com/info/careers/), we not only have *multiple global
 
 ## Install
 
-
 ```bash
 $ npm install --save styled-variants
 ```
 
-## Usage
+## Example
 
-**Under construction.** Usage is bound to change while the library is being finished.
+**Under construction.** Example is bound to change while the library is being finished.
+
+## API
+
+**Under construction.** API is bound to change while the library is being finished.
 
 ## Contributing
 

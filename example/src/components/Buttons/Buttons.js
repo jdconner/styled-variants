@@ -1,13 +1,25 @@
 import React from "react";
-import { Container } from "../../App.styled";
-import { StyledButton } from './Buttons.styled';
+import { Container, ExampleContainer } from "../../App.styled";
+import { ThemedButton } from "./Buttons.styled";
 
-export default props => {
+export default () => {
     return (
-        <Container>
-            <StyledButton size="large">Large</StyledButton>
-            <StyledButton>Default</StyledButton>
-            <StyledButton size="small">Small</StyledButton>
-        </Container>
+        <ExampleContainer>
+            <Container>
+                <ThemedButton size="large">Large</ThemedButton>
+                <ThemedButton>Default</ThemedButton>
+                <ThemedButton size="small">Small</ThemedButton>
+            </Container>
+            <Container>
+                <ThemedButton variant="primary">Primary</ThemedButton>
+                <ThemedButton variant="primary">Primary2</ThemedButton>
+                <ThemedButton variant="secondary">Secondary</ThemedButton>
+            </Container>
+            <Container>
+                <ThemedButton size="large" variant="primary">Large Primary</ThemedButton>
+                <ThemedButton size="small" variant="primary">Small Primary</ThemedButton>
+                <ThemedButton size="small" variant="secondary">Small Secondary</ThemedButton>
+            </Container>
+        </ExampleContainer>
     );
 };

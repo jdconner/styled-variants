@@ -1,9 +1,15 @@
 import React from "react";
 
+import styled from 'styled-components';
+
+const RadioOption = styled.input`
+    cursor: pointer;
+`;
+
 export default ({ onClick, checked, name, type }) => {
     return (
         <div>
-            <input
+            <RadioOption
                 type="radio"
                 id={name}
                 name={type}

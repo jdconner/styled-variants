@@ -15,7 +15,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     main {
-        background-color: #282c34;
+        background-color:  ${({ theme }) => theme.colors.secondary};
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -25,7 +25,7 @@ export const GlobalStyle = createGlobalStyle`
         color: white;
 
         h2, h3 {
-            color: #09d3ac;
+            color: ${({ theme }) => theme.colors.primary};
         }
 
         h2 {
@@ -34,21 +34,33 @@ export const GlobalStyle = createGlobalStyle`
     }
 `;
 
-export const Container = styled.div`
+const BaseContainer = styled.div`
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    justify-context: center;
+`;
+
+export const Container = styled(BaseContainer)`
+    flex-direction: row;
 
     * {
         margin-right: 10px;
     }
 `;
 
-export const AppContainer = styled.div`
-    width: 50%;
-    min-width: 600px;
+export const ExampleContainer = styled(BaseContainer)`
     display: flex;
+    flex-direction: column;
+
+    * {
+        margin: 8px;
+    }
+`;
+
+export const AppContainer = styled(BaseContainer)`
+    width: 70%;
+    max-width: 860px;
     justify-content: space-around;
     align-items: flex-start;
+    flex-wrap: wrap;
 `;
