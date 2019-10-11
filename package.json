@@ -28,7 +28,6 @@
         "typescript": "^2.9.2"
     },
     "dependencies": {
-        "lodash.defaultsdeep": "^4.6.1",
-        "lodash.get": "^4.4.2"
+        "lodash.defaultsdeep": "^4.6.1"
     }
 }

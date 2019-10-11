@@ -12,7 +12,7 @@ const BASE = {
 const BASE_LIGHT = {
     ...BASE,
     primary: "#ff6f61",
-    secondary: "#595d5f",
+    secondary: "#393d3f",
 };
 
 export const colors = {

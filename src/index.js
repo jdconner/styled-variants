@@ -18,20 +18,18 @@ function theme(componentName) {
 
 function variant(componentName, variantName, variantStylesheet = {}) {
     return function(props) {
-        const variantStylesheetCopy = Object.assign({}, variantStylesheet);
         const globalComponentStylesheet = props.theme[componentName] || {};
 
         const stylesheet = defaultsDeep(
-            variantStylesheetCopy,
+            { ...variantStylesheet },
             globalComponentStylesheet
-        ); // ? Local takes precedence over global
+        ); // ? Local takes precedence over global because of highher specificity
 
         const variantPropValue = props[variantName];
+        const stylesheetVariant =
+            (variantPropValue && stylesheet[variantPropValue]) || {};
 
-        let variantSheet = defaultsDeep(
-            stylesheet,
-            (variantPropValue && stylesheet[variantPropValue]) || {}
-        );
+        let variantSheet = defaultsDeep({ ...stylesheetVariant }, stylesheet);
 
         for (let [key, value] of Object.entries(variantSheet)) {
             if (_isObject(value)) {
