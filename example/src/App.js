@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "styled-components";
 
-import { GlobalStyle, Container, AppContainer } from "./App.styled";
+import {
+    GlobalStyle,
+    Container,
+    AppContainer,
+    ExampleContainer,
+} from "./App.styled";
 import { colors } from "./App.theme";
 import { Buttons } from "./components/Buttons";
 import Radio from "./components/Radio";
-
-const MODES = {
-    DARK: "dark",
-    LIGHT: "light",
-};
+import { MODES } from "./App.constants";
 
 function App() {
     const [mode, setMode] = useState(MODES.DARK);
@@ -17,11 +18,14 @@ function App() {
 
     return (
         <ThemeProvider
-            theme={{ mode, colors, Button: { borderRadius: "30px" } }}>
+            theme={{
+                colors: colors[mode],
+                Button: { userSelect: "none", cursor: "pointer" },
+            }}>
             <GlobalStyle />
             <main>
                 <AppContainer>
-                    <div>
+                    <ExampleContainer>
                         <h2>Theme Toggles</h2>
                         <Container>
                             <h3>Mode</h3>
@@ -46,7 +50,7 @@ function App() {
                                 type={"mode"}
                             />
                         </Container>
-                    </div>
+                    </ExampleContainer>
                     <Examples />
                 </AppContainer>
             </main>

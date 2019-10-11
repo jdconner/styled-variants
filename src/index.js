@@ -16,21 +16,36 @@ function theme(componentName) {
     };
 }
 
-function variant(componentName, variantName, variantStylesheet) {
+function variant(componentName, variantName, variantStylesheet = {}) {
     return function(props) {
+        const variantStylesheetCopy = Object.assign({}, variantStylesheet);
         const globalComponentStylesheet = props.theme[componentName] || {};
-        const stylesheet = defaultsDeep(globalComponentStylesheet, variantStylesheet); // Global takes precedence over local
+
+        const stylesheet = defaultsDeep(
+            variantStylesheetCopy,
+            globalComponentStylesheet
+        ); // ? Local takes precedence over global
 
         const variantPropValue = props[variantName];
 
-        const variantSheet = defaultsDeep(
-            (variantPropValue && stylesheet[variantPropValue]) || {},
-            stylesheet
+        let variantSheet = defaultsDeep(
+            stylesheet,
+            (variantPropValue && stylesheet[variantPropValue]) || {}
         );
 
         for (let [key, value] of Object.entries(variantSheet)) {
-            // ? Removes excess key/values that do not apply to reduce the number of styles created by styled-components
-            if (_isObject(value)) delete variantSheet[key];
+            if (_isObject(value)) {
+                // ? Adds support for boolean variants ontop of normal variant
+                if (!!props[key] && variantSheet[key]) {
+                    variantSheet = { ...variantSheet, ...variantSheet[key] };
+                }
+
+                // ? Removes excess key/values that do not apply to reduce the number of styles created by styled-components
+                delete variantSheet[key];
+            }
+        }
+
+        for (let [key, value] of Object.entries(variantSheet)) {
             if (_isFunction(value)) variantSheet[key] = value(props);
         }
 

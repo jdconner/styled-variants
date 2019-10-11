@@ -1,3 +1,4 @@
+import { MODES } from "./App.constants";
 
 // dynamically create all hover/focus states for each color: darken
 const BASE = {
@@ -5,13 +6,30 @@ const BASE = {
     secondary: "#282c34",
     white: "white",
     deepPurple: "purple",
+    blue: "cyan",
+};
+
+const BASE_LIGHT = {
+    ...BASE,
+    primary: "#ff6f61",
+    secondary: "#595d5f",
 };
 
 export const colors = {
-    ...BASE,
-    border: BASE.deepPurple,
-    typography: {
-        primary: BASE.white,
-        secondary: BASE.secondary
+    [MODES.DARK]: {
+        ...BASE,
+        border: BASE.primary,
+        typography: {
+            primary: BASE.secondary,
+            secondary: BASE.white,
+        },
+    },
+    [MODES.LIGHT]: {
+        ...BASE_LIGHT,
+        border: BASE_LIGHT.primary,
+        typography: {
+            primary: BASE.secondary,
+            secondary: BASE.white,
+        },
     },
 };

@@ -5,6 +5,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "module": "dist/index.esm.js",
+    "homepage": "https://github.com/jdconner/styled-variants",
     "scripts": {
         "build": "rollup -c",
         "dev": "rollup -c -w",
@@ -14,7 +15,7 @@
         "publish": "npm run build && npm publish --access public"
     },
     "keywords": [],
-    "author": "Justin Conner",
+    "author": "Justin Conner <justindconner2@gmail.com> (https://justinconner.dev/)",
     "license": "MIT",
     "devDependencies": {
         "rollup": "^1.20.0",
