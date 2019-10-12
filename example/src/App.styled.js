@@ -83,4 +83,5 @@ export const AppContainer = styled(BaseContainer)`
     justify-content: space-around;
     align-items: flex-start;
     flex-wrap: wrap;
+    margin: 20px;
 `;

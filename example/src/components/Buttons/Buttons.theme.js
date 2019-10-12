@@ -1,4 +1,5 @@
 import createTheme from "../../../../src"; // styled-variant
+import shadeColor from "../../utils/shadeColor";
 
 const ButtonTheme = createTheme("Button");
 
@@ -41,10 +42,19 @@ export const variantVariant = ButtonTheme.variant("variant", {
             backgroundColor: ({ theme }) => theme.colors.primary,
             color: ({ theme }) => theme.colors.white,
         },
+        "&:hover": {
+            borderColor: ({ theme }) => shadeColor(theme.colors.primary, -20),
+        },
+        "&:focus": {
+            borderColor: ({ theme }) => shadeColor(theme.colors.primary, -40),
+        },
     },
     secondary: {
         border: ({ theme }) => `3px solid ${theme.colors.white}`,
         backgroundColor: "transparent",
         color: ({ theme }) => theme.colors.white,
+        "&:hover, &:focus": {
+            borderColor: ({ theme }) => shadeColor(theme.colors.primary, -20),
+        },
     },
 });

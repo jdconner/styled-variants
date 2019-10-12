@@ -10,6 +10,10 @@ function _isFunction(value) {
     return value != null && typeof value === "function";
 }
 
+function _isPseudoClass(value) {
+    return value.includes(":");
+}
+
 function theme(componentName) {
     return {
         variant: variant.bind(null, componentName),
@@ -32,7 +36,7 @@ function variant(componentName, variantName, variantStylesheet = {}) {
         let variantSheet = defaultsDeep({ ...stylesheetVariant }, stylesheet);
 
         for (let [key, value] of Object.entries(variantSheet)) {
-            if (_isObject(value)) {
+            if (_isObject(value) && !_isPseudoClass(key)) {
                 // ? Adds support for boolean variants ontop of normal variant
                 if (!!props[key] && variantSheet[key]) {
                     variantSheet = { ...variantSheet, ...variantSheet[key] };
@@ -44,7 +48,22 @@ function variant(componentName, variantName, variantStylesheet = {}) {
         }
 
         for (let [key, value] of Object.entries(variantSheet)) {
-            if (_isFunction(value)) variantSheet[key] = value(props);
+            if (_isFunction(value)) {
+                variantSheet[key] = value(props);
+            } else if (_isPseudoClass(key)) {
+                // ? Support pseudo-class functions
+                let newPseudoValues = {};
+
+                for (let [pseudoKey, pseudoValue] of Object.entries(
+                    variantSheet[key]
+                )) {
+                    newPseudoValues[pseudoKey] = _isFunction(pseudoValue)
+                        ? pseudoValue(props)
+                        : pseudoValue;
+                }
+
+                variantSheet[key] = newPseudoValues;
+            }
         }
 
         return variantSheet;
