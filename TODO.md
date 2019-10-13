@@ -1,4 +1,7 @@
 10/10/19:
 - Add TypeScript types
-- Add support for global variants
-- Add support for multi variants
+
+10/12/19:
+- Make sure build is optimized
+- Add tests
+- Fix publish script

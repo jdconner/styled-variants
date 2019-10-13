@@ -42,7 +42,7 @@ export default () => {
                 </div>
             </Container>
             <Container>
-                <div>Variants with boolean variants:</div>
+                <div>Variants with boolean prop variants:</div>
                 <div>
                     <ThemedButton variant="primary" isActive={true}>
                         Primary isActive
