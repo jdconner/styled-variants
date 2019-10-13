@@ -232,6 +232,8 @@ Thankfully, `styled-components` allows for multiple sets of first class objects,
 export const ThemedButton = styled.button(typeVariant, sizeVariant);
 ```
 
+<br>
+
 ---
 
 <br>
@@ -289,6 +291,8 @@ export const ThemedButton = styled(Button)(sizeVariant);
 <br>
 
 ---
+
+<br>
 
 ## Contributing
 
