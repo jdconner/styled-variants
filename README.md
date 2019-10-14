@@ -38,7 +38,17 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 
 At [Remine](https://remine.com/info/careers/), we not only have _multiple global themes_ (i.e. separate themes for different apps/stakeholders, with light and dark themes for each), but _we also have multiple variants_: `size` (e.g. small, large, etc), `state` (e.g. error, warning, etc), and `type` (e.g. primary, secondary, tertiary) with more to come. We couldn't find a library in the ecosystem that could support such a large number of variants with minimal code, so we decided to create one.
 
-Most theming systems for `styled-components` available today spit out string values (e.g. [styled-theming](https://github.com/styled-components/styled-theming), [styled-theme](https://github.com/diegohaz/styled-theme)) which can add a code bloat since you still need to assign the theme value to a css property. `styled-variants` takes advantage of the first-class object functionality that `styled-components` has added in [version 3.3.0](https://spectrum.chat/styled-components/general/v3-3-0-is-out-with-first-class-object-support~2b5fd935-fb1d-480d-a524-95ecd540a1ac) to help reduce this bloat and allow for cleaner, scalable theming.
+Most theming systems for `styled-components` available today spit out string values (e.g. [styled-theming](https://github.com/styled-components/styled-theming), [styled-theme](https://github.com/diegohaz/styled-theme)) which can add code bloat since you still need to assign the theme value to a css property. `styled-variants` takes advantage of the first-class object functionality that `styled-components` has added in [version 3.3.0](https://spectrum.chat/styled-components/general/v3-3-0-is-out-with-first-class-object-support~2b5fd935-fb1d-480d-a524-95ecd540a1ac) to help reduce this bloat and allow for cleaner, scalable theming.
+
+What this library is looking to empower and contain:
+
+1. Scalable theming
+2. Both local variant (passed via props) and global variant (passed via ThemeProvider) support
+3. Multiple variants support
+4. Remove redundant code (by taking advantage of the first-class object functionality stated above)
+5. Small distribution size
+
+All while encouraging clean, human-readable code.
 
 ## Install
 
@@ -65,7 +75,7 @@ If we expect to write our HTML like this:
 <ThemedButton size="small" />
 ```
 
-Behind the scenes, the standard approach to define the variants is to write a `styled-component` that uses ternary switches within the template literal definition:
+The standard approach to define the "size" variant is to write a `styled-component` that uses ternary switches within the template literal definition:
 
 <img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/red/x-mark-xxl.png"> **DIFFICULT TO READ**
 
@@ -77,6 +87,12 @@ export const Button = styled.button`
             : props.size === "small"
             ? "0.3em 0.7em"
             : "0.7em 1em"};
+    margin: ${props =>
+        props.size === "large"
+            ? "0.3em 0.7em"
+            : props.size === "small"
+            ? "0.1em 0.5em"
+            : "0.2em 0.6em"};
     font-size: ${props =>
         props.size === "large"
             ? "1.2rem"
@@ -86,13 +102,11 @@ export const Button = styled.button`
 `;
 ```
 
-This is not only difficult to read, but it's not scalable.
+This is not only difficult to read, but it also does not scale well.
 
 **_Imagine_** what it would look like if we had even more size options or if "size" affected more css attributes!
 
-This is the problem `styled-variants` is aiming to address.
-
-With `styled-variants`, we can see easily:
+With `styled-variants`, we can easily see:
 
 1. What is included in each variant, and
 2. What the css values will be without having to parse multiple levels of conditionals:
@@ -105,24 +119,26 @@ import createTheme from "styled-variants";
 
 const ButtonTheme = createTheme("Button");
 
-const defaultSizeStyles = {
-    padding: "0.7em 1em",
-    fontSize: "1rem",
-};
-
 const sizeVariant = ButtonTheme.variant("size", {
-    ...defaultSizeStyles,
     small: {
         padding: "0.3em 0.7em",
+        margin: "0.1em 0.5em",
         fontSize: "0.8rem",
     },
     large: {
         padding: "1em 1.2em",
+        margin: "0.3em 0.7em",
         fontSize: "1.2rem",
     },
 });
 
-export const ThemedButton = styled.button(sizeVariant);
+const Button = styled.button`
+    padding: 0.7em 1em;
+    margin: 0.2em 0.6em;
+    font-size: 1rem;
+`;
+
+export const ThemedButton = styled(Button)(sizeVariant);
 ```
 
 ---
@@ -137,20 +153,19 @@ import createTheme from "styled-variants";
 
 const ButtonTheme = createTheme("Button");
 
-const defaultTypeStyles = {
-    color: "white",
-    border: ({ theme }) => `5px solid ${theme.colors.primary}`,
-    backgroundColor: ({ theme }) => theme.colors.secondary,
-};
-
 export const typeVariant = ButtonTheme.variant("type", {
-    ...defaultTypeStyles,
     secondary: {
         color: "black",
-        backgroundColor: ({ theme }) => theme.colors.primary,
         borderColor: ({ theme }) => theme.colors.secondary,
+        backgroundColor: ({ theme }) => theme.colors.primary,
     },
 });
+
+const Button = styled.button`
+    color: white;
+    border: ${({ theme }) => `5px solid ${theme.colors.primary}`};
+    backgroundcolor: ${({ theme }) => theme.colors.secondary};
+`;
 
 export const ThemedButton = styled.button(typeVariant);
 ```
@@ -226,7 +241,7 @@ const MyApp = () => {
 
 ### Combining Variants
 
-Thankfully, `styled-components` allows for multiple sets of first class objects, so we can do the following to combine our variants:
+Thankfully, `styled-components` allows for multiple sets of objects, so we can do the following to combine our variants:
 
 ```js
 const typeVariant = /* previous example's typeVariant code */
@@ -241,7 +256,7 @@ The higher the index of the parameter, the higher the precedence. In this case, 
 
 ### Pseudo Class Support
 
-To add pseudo classes we need to make it a valid object key. This is done simply by wrapping it in quotes:
+To add pseudo classes we need to make it a valid key. This is done simply by wrapping it in quotes:
 
 ```js
 import createTheme from "styled-variants";
