@@ -1,5 +1,6 @@
 import createTheme from "../../../../src"; // styled-variant
 import shadeColor from "../../utils/shadeColor";
+import { APP_TYPES } from "../../App.constants";
 
 const ButtonTheme = createTheme("Button");
 
@@ -66,10 +67,10 @@ export const variantVariant = ButtonTheme.variant("variant", {
 });
 
 export const appTypeVariant = ButtonTheme.globalVariant("appType", {
-    consumer: {
+    [APP_TYPES.SOFT]: {
         borderRadius: "50px",
     },
-    agent: {
+    [APP_TYPES.HARD]: {
         borderRadius: "5px",
     },
 });

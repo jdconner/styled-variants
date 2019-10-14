@@ -4,6 +4,6 @@ export const MODES = {
 };
 
 export const APP_TYPES = {
-    CONSUMER: "consumer",
-    AGENT: "agent",
+    SOFT: "soft",
+    HARD: "hard",
 };
