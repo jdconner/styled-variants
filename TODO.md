@@ -1,7 +1,5 @@
-10/10/19:
-- Add TypeScript types
-
-10/12/19:
-- Make sure build is optimized
-- Add tests
-- Fix publish script
+-   Add TypeScript types
+-   Make sure build is optimized
+-   Add tests
+-   Fix publish script? Tries to publish twice
+-   Theme provider variable (i.e. app/mode) with local variants implementation

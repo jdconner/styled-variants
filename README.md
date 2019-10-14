@@ -11,7 +11,7 @@
 
 <div align="center" style="width: 100%; text-align: center; display: flex; justify-content: center;">
 <p style="width: 50%;">
-A scalable styled-component theming system that fully leverages JavaScript as a language for styles authoring and theming.
+A scalable styled-component theming system that fully leverages JavaScript as a language for styles authoring and theming at both local and global levels.
 </p>
 </div>
 <br>
@@ -270,22 +270,28 @@ const typeVariant = ButtonTheme.variant("type", {
 
 <br>
 
-### **Extending styled-components**
+### **Global theming**
 
-If we have a styled-component already created, we can extend the styles by applying variants:
+In previous examples, we created our theme named `Button`, so at the route of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
 
 ```js
-const sizeVariant = ButtonTheme.variant("size", {
-    /* sizeVariant properties */
-});
-
-const Button = styled.button`
-    padding: 0.7em 1em;
-    fontsize: 1rem;
-    color: blue;
-`;
-
-export const ThemedButton = styled(Button)(sizeVariant);
+// App.js
+const MyApp = () => {
+    return (
+        <ThemeProvider
+            theme={{
+                colors,
+                Button: {
+                    userSelect: "none",
+                    cursor: "pointer",
+                    isDisabled: { cursor: "default", pointerEvents: "none" },
+                },
+            }}>
+            <ThemedButton />
+            <ThemedButton isDisabled />
+        </ThemeProvider>
+    );
+};
 ```
 
 <br>
