@@ -17,25 +17,23 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 </p>
 <br>
 
-> Note: This was create specifically for `styled-components` but can also be used with `@emotion/styled`
+> Note: This was create specifically for `styled-components` but can also be used with `@emotion/styled`.
 
-<h2>
- Table of contents
-</h2>
+## Table Of Contents
 
-- [Why another theming library?](#why-another-theming-library)
+- [Why Another Theming Library?](#why-another-theming-library)
 - [Install](#install)
 - [Usage](#usage)
-  - [**Basic**](#basic)
-  - [**Passing Props**](#passing-props)
-  - [**Boolean variants**](#boolean-variants)
-  - [**Combining variants**](#combining-variants)
-  - [**Pseudo class support**](#pseudo-class-support)
-  - [**Global theming**](#global-theming)
+  - [Basic](#basic)
+  - [Passing Props](#passing-props)
+  - [Boolean Variants](#boolean-variants)
+  - [Combining Variants](#combining-variants)
+  - [Pseudo Class Support](#pseudo-class-support)
+  - [Global Theming](#global-theming)
 - [Contributing](#contributing)
 - [License](#license)
 
-## Why another theming library?
+## Why Another Theming Library?
 
 At [Remine](https://remine.com/info/careers/), we not only have _multiple global themes_ (i.e. separate themes for different apps/stakeholders, with light and dark themes for each), but _we also have multiple variants_: `size` (e.g. small, large, etc), `state` (e.g. error, warning, etc), and `type` (e.g. primary, secondary, tertiary) with more to come. We couldn't find a library in the ecosystem that could support such a large number of variants with minimal code, so we decided to create one.
 
@@ -51,7 +49,7 @@ $ npm install --save styled-variants
 
 See our Buttons [example code](https://github.com/jdconner/styled-variants/tree/master/example/src/components/Buttons) if you'd rather read code to understand the use cases.
 
-### **Basic**
+### Basic
 
 If we expect to write our HTML like this:
 
@@ -66,10 +64,10 @@ If we expect to write our HTML like this:
 <ThemedButton size="small" />
 ```
 
+
+Behind the scenes, the standard approach to define the variants is to write a `styled-component` that uses ternary switches within the template literal definition:
+
 <img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/red/x-mark-xxl.png"> **DIFFICULT TO READ**
-
-You'd normally use the string-based, extremely difficult to read code to dynamically style your components:
-
 ```js
 export const Button = styled.button`
     padding: ${props =>
@@ -86,13 +84,17 @@ export const Button = styled.button`
             : "1rem"};
 `;
 ```
+This is not only difficult to read, but it's not scalable.
 
-**_Imagine_** what this would look like if we had even more size options or if "size" affected more css attributes!
+**_Imagine_** what it would look like if we had even more size options or if "size" affected more css attributes!
+
+This is the problem `styled-variants` is aiming to address.
+
+With `styled-variants`, we can see easily:
+1. What is included in each variant, and
+2. What the css values will be without having to parse multiple levels of conditionals:
 
 <img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/green/check-mark-3-xxl.png"> **EASIER TO READ**
-
-With styled-variants, not only can we see very easily what each variants prop value entails, but we can also read what each css value will interpolate to since we no longer have a bunch of conditionals bloating the code:
-
 ```js
 import styled from "styled-components";
 import createTheme from "styled-variants";
@@ -119,13 +121,9 @@ const sizeVariant = ButtonTheme.variant("size", {
 export const ThemedButton = styled.button(sizeVariant);
 ```
 
-<br>
-
 ---
 
-<br>
-
-### **Passing Props**
+### Passing Props
 
 Just like `styled-components`, `styled-variants` also supports passing of props via function:
 
@@ -153,7 +151,7 @@ export const typeVariant = ButtonTheme.variant("type", {
 export const ThemedButton = styled.button(typeVariant);
 ```
 
-Then we can use `styled-components`'s `ThemeProvider` to inject a theme into the props of our `styled-components`:
+Then we can use `styled-components`'s `ThemeProvider` to inject a theme into the props of our `ThemedButton`:
 
 ```jsx
 import { ThemeProvider } from "styled-components";
@@ -174,13 +172,9 @@ const MyApp = () => {
 };
 ```
 
-<br>
-
 ---
 
-<br>
-
-### **Boolean variants**
+### Boolean Variants
 
 If we have separate states (e.g. isDisabled, isActive, isOpen, etc) for each variant, we can easily incorporate those too:
 
@@ -221,31 +215,30 @@ const MyApp = () => {
 };
 ```
 
-<br>
-
 ---
 
-<br>
-
-### **Combining variants**
+### Combining Variants
 
 Thankfully, `styled-components` allows for multiple sets of first class objects, so we can do the following to combine our variants:
 
 ```js
-/*** Insert previous examples here ***/
+
+const typeVariant = {
+    /*** Insert previous examples here ***/
+}
+
+const sizeVariant = {
+    /*** Insert previous examples here ***/
+}
 
 export const ThemedButton = styled.button(typeVariant, sizeVariant);
 ```
 
-<br>
-
 ---
 
-<br>
+### Pseudo Class Support
 
-### **Pseudo class support**
-
-How to write pseudo classes:
+To add pseudo classes we need to make it a valid object key. This is done simply by wrapping it in quotes:
 
 ```js
 import createTheme from "styled-variants";
@@ -269,15 +262,11 @@ const typeVariant = ButtonTheme.variant("type", {
 });
 ```
 
-<br>
-
 ---
 
-<br>
+### Global Theming
 
-### **Global theming**
-
-In previous examples, we created our theme named `Button`, so at the route of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
+In previous examples, we created our theme named `Button`, so at the root of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
 
 ```js
 // App.js
@@ -299,11 +288,7 @@ const MyApp = () => {
 };
 ```
 
-<br>
-
 ---
-
-<br>
 
 ## Contributing
 
