@@ -20,17 +20,17 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
  Table of contents
 </h2>
 
--   [Why another theming library?](#why-another-theming-library)
--   [Install](#install)
--   [Usage](#usage)
-    -   [**Basic**](#basic)
-    -   [**Passing Props**](#passing-props)
-    -   [**Boolean variants**](#boolean-variants)
-    -   [**Combining variants**](#combining-variants)
-    -   [**Pseudo class support**](#pseudo-class-support)
-    -   [**Extending styled-components**](#extending-styled-components)
--   [Contributing](#contributing)
--   [License](#license)
+- [Why another theming library?](#why-another-theming-library)
+- [Install](#install)
+- [Usage](#usage)
+  - [**Basic**](#basic)
+  - [**Passing Props**](#passing-props)
+  - [**Boolean variants**](#boolean-variants)
+  - [**Combining variants**](#combining-variants)
+  - [**Pseudo class support**](#pseudo-class-support)
+  - [**Global theming**](#global-theming)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Why another theming library?
 
