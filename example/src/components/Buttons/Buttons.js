@@ -54,8 +54,9 @@ export default () => {
                         variant="primary"
                         size="small"
                         isActive={true}
-                        isDisabled={true}>
-                        Small Primary isActive + isDisabled
+                        isDisabled={true}
+                        isPurple>
+                        Small Primary isActive + isDisabled + isPurple
                     </ThemedButton>
                 </div>
             </Container>

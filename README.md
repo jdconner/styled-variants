@@ -1,4 +1,3 @@
-
 <h1 align="center" text-align="center">
     <img height="70px" width="70px" src="https://octodex.github.com/images/daftpunktocat-guy.gif">
    styled-variants
@@ -32,6 +31,7 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
   - [**Combining variants**](#combining-variants)
   - [**Pseudo class support**](#pseudo-class-support)
   - [**Global theming**](#global-theming)
+  - [**Global theming continued**](#global-theming-continued)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -200,6 +200,9 @@ const typeVariant = ButtonTheme.variant("type", {
         },
         isActive: {
             boxShadow: "0px 0px 1px 1px blue",
+            isPurple: {
+                backgroundColor: "purple",
+            },
         },
     },
 });
@@ -232,7 +235,7 @@ const MyApp = () => {
 Thankfully, `styled-components` allows for multiple sets of first class objects, so we can do the following to combine our variants:
 
 ```js
-/*** Insert previous examples here ***/
+/*** typeVariant, sizeVariant example code ***/
 
 export const ThemedButton = styled.button(typeVariant, sizeVariant);
 ```
@@ -280,7 +283,6 @@ const typeVariant = ButtonTheme.variant("type", {
 In previous examples, we created our theme named `Button`, so at the route of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
 
 ```js
-// App.js
 const MyApp = () => {
     return (
         <ThemeProvider
@@ -294,6 +296,56 @@ const MyApp = () => {
             }}>
             <ThemedButton />
             <ThemedButton isDisabled />
+        </ThemeProvider>
+    );
+};
+```
+
+<br>
+
+---
+
+<br>
+
+### **Global theming continued**
+
+Sometimes we want to change our entire app's styles based on a `ThemeProvider` value, rather than a local prop value. We can do that via the `globalVariant` function:
+
+```js
+import styled from "styled-components";
+import createTheme from "styled-variants";
+
+const ButtonTheme = createTheme("Button");
+
+export const modeGlobalVariant = ButtonTheme.globalVariant("mode", {
+    soft: {
+        borderRadius: "50px",
+    },
+    hard: {
+        borderRadius: "3px",
+    },
+});
+
+export const ThemedButton = styled.button(modeGlobalVariant);
+```
+
+then make sure we pass the "mode" `globalVariant` via the `ThemeProvider`:
+
+```js
+const MyApp = () => {
+    const [mode, setMode] = useState("soft");
+
+    return (
+        <ThemeProvider
+            theme={{
+                mode,
+            }}>
+            <ThemedButton onClick={() => setMode("soft")}>
+                Set Soft Mode
+            </ThemedButton>
+            <ThemedButton onClick={() => setMode("hard")}>
+                Set Hard Mode
+            </ThemedButton>
         </ThemeProvider>
     );
 };
