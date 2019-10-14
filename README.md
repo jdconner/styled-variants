@@ -1,5 +1,8 @@
-<h1 align="center">
-    styled-variants
+
+<h1 align="center" text-align="center">
+    <img height="70px" width="70px" src="https://octodex.github.com/images/daftpunktocat-guy.gif">
+   styled-variants
+   <img height="70px" width="70px" src="https://octodex.github.com/images/daftpunktocat-thomas.gif">
 </h1>
 
 <p align="center">
@@ -9,14 +12,14 @@
     <img src="https://img.shields.io/github/size/jdconner/styled-variants/src/index.js">
 </p>
 
-<div align="center" style="width: 100%; text-align: center; display: flex; justify-content: center;">
-<p style="width: 50%;">
+<p align="center" style="width: 100%; text-align: center; display: flex; justify-content: center;">
 A scalable styled-component theming system that fully leverages JavaScript as a language for styles authoring and theming at both local and global levels.
 </p>
-</div>
+<br>
+
+> Note: This was create specifically for `styled-components` but can also be used with `@emotion/styled`.
 
 ## Table Of Contents
-
 
 - [Why Another Theming Library?](#why-another-theming-library)
 - [Install](#install)
@@ -64,6 +67,7 @@ If we expect to write our HTML like this:
 
 Behind the scenes, the standard approach to define the variants is to write a `styled-component` that uses ternary switches within the template literal definition:
 
+<img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/red/x-mark-xxl.png"> **DIFFICULT TO READ**
 ```js
 export const Button = styled.button`
     padding: ${props =>
@@ -90,6 +94,7 @@ With `styled-variants`, we can see easily:
 1. What is included in each variant, and
 2. What the css values will be without having to parse multiple levels of conditionals:
 
+<img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/green/check-mark-3-xxl.png"> **EASIER TO READ**
 ```js
 import styled from "styled-components";
 import createTheme from "styled-variants";
