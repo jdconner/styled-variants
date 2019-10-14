@@ -9,7 +9,7 @@ import { MODES, APP_TYPES } from "./App.constants";
 
 function App() {
     const [mode, setMode] = useState(MODES.DARK);
-    const [appType, setAppType] = useState(APP_TYPES.AGENT);
+    const [appType, setAppType] = useState(APP_TYPES.HARD);
     const onClick = (value, action) => action(value);
 
     return (
@@ -38,23 +38,15 @@ function App() {
                     <br />
                     <h3>App Type</h3>
                     <Radio
-                        name={APP_TYPES.AGENT}
-                        checked={appType === APP_TYPES.AGENT}
-                        onClick={onClick.bind(
-                            null,
-                            APP_TYPES.AGENT,
-                            setAppType
-                        )}
+                        name={APP_TYPES.HARD}
+                        checked={appType === APP_TYPES.HARD}
+                        onClick={onClick.bind(null, APP_TYPES.HARD, setAppType)}
                         type={"appType"}
                     />
                     <Radio
-                        name={APP_TYPES.CONSUMER}
-                        checked={appType === APP_TYPES.CONSUMER}
-                        onClick={onClick.bind(
-                            null,
-                            APP_TYPES.CONSUMER,
-                            setAppType
-                        )}
+                        name={APP_TYPES.SOFT}
+                        checked={appType === APP_TYPES.SOFT}
+                        onClick={onClick.bind(null, APP_TYPES.SOFT, setAppType)}
                         type={"appType"}
                     />
                 </Legend>
