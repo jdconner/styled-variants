@@ -30,12 +30,9 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
   - [Combining Variants](#combining-variants)
   - [Pseudo Class Support](#pseudo-class-support)
   - [Global Theming](#global-theming)
-  - [**Global theming continued**](#global-theming-continued)
+  - [Globally Theming A Specific Component Type](#globally-theming-a-specific-component-type)
 - [Contributing](#contributing)
 - [License](#license)
-
--   [Contributing](#contributing)
--   [License](#license)
 
 ## Why Another Theming Library?
 
@@ -272,31 +269,6 @@ const typeVariant = ButtonTheme.variant("type", {
 
 ### Global Theming
 
-In previous examples, we created our theme named `Button`, so at the root of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
-
-```js
-const MyApp = () => {
-    return (
-        <ThemeProvider
-            theme={{
-                colors,
-                Button: {
-                    userSelect: "none",
-                    cursor: "pointer",
-                    isDisabled: { cursor: "default", pointerEvents: "none" },
-                },
-            }}>
-            <ThemedButton />
-            <ThemedButton isDisabled />
-        </ThemeProvider>
-    );
-};
-```
-
----
-
-### **Global theming continued**
-
 Sometimes we want to change our entire app's styles based on a `ThemeProvider` value, rather than a local prop value. We can do that via the `globalVariant` function:
 
 ```js
@@ -334,6 +306,31 @@ const MyApp = () => {
             <ThemedButton onClick={() => setMode("hard")}>
                 Set Hard Mode
             </ThemedButton>
+        </ThemeProvider>
+    );
+};
+```
+
+---
+
+### Globally Theming A Specific Component Type
+
+In previous examples, we created our theme named `Button`, so at the root of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
+
+```js
+const MyApp = () => {
+    return (
+        <ThemeProvider
+            theme={{
+                colors,
+                Button: {
+                    userSelect: "none",
+                    cursor: "pointer",
+                    isDisabled: { cursor: "default", pointerEvents: "none" },
+                },
+            }}>
+            <ThemedButton />
+            <ThemedButton isDisabled />
         </ThemeProvider>
     );
 };
