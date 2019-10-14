@@ -29,7 +29,7 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
   - [Boolean Variants](#boolean-variants)
   - [Combining Variants](#combining-variants)
   - [Pseudo Class Support](#pseudo-class-support)
-  - [Global Theming](#global-theming)
+  - [Global Variant Theming](#global-variant-theming)
   - [Globally Theming A Specific Component Type](#globally-theming-a-specific-component-type)
 - [Contributing](#contributing)
 - [License](#license)
@@ -267,7 +267,7 @@ const typeVariant = ButtonTheme.variant("type", {
 
 ---
 
-### Global Theming
+### Global Variant Theming
 
 Sometimes we want to change our entire app's styles based on a `ThemeProvider` value, rather than a local prop value. We can do that via the `globalVariant` function:
 
