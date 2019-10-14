@@ -1,5 +1,7 @@
-<h1 align="center">
-    styled-variants
+<h1 align="center" text-align="center">
+    <img height="70px" width="70px" src="https://octodex.github.com/images/daftpunktocat-guy.gif">
+     styled-variants
+    <img height="70px" width="70px" src="https://octodex.github.com/images/daftpunktocat-thomas.gif">
 </h1>
 
 <p align="center">
@@ -9,11 +11,9 @@
     <img src="https://img.shields.io/github/size/jdconner/styled-variants/src/index.js">
 </p>
 
-<div align="center" style="width: 100%; text-align: center; display: flex; justify-content: center;">
-<p style="width: 50%;">
+<p align="center" style="width: 100%; text-align: center; display: flex; justify-content: center;">
 A scalable styled-component theming system that fully leverages JavaScript as a language for styles authoring and theming at both local and global levels.
 </p>
-</div>
 <br>
 
 <h2>
@@ -63,8 +63,9 @@ If we expect to write our HTML like this:
 <ThemedButton size="small" />
 ```
 
-<h3 style='color: red;'>DIFFICULT TO READ</h3>
-You'd normall use the string-based, extremely difficult to read code to dynamically style your components:
+<img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/red/x-mark-xxl.png"> **DIFFICULT TO READ**
+
+You'd normally use the string-based, extremely difficult to read code to dynamically style your components:
 
 ```js
 export const Button = styled.button`
@@ -85,7 +86,8 @@ export const Button = styled.button`
 
 **_Imagine_** what this would look like if we had even more size options or if "size" affected more css attributes!
 
-<h3 style='color: lightgreen;'>EASIER TO READ</h3>
+<img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/green/check-mark-3-xxl.png"> **EASIER TO READ**
+
 With styled-variants, not only can we see very easily what each variants prop value entails, but we can also read what each css value will interpolate to since we no longer have a bunch of conditionals bloating the code:
 
 ```js
