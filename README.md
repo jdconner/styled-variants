@@ -217,7 +217,14 @@ const MyApp = () => {
 Thankfully, `styled-components` allows for multiple sets of first class objects, so we can do the following to combine our variants:
 
 ```js
-/*** Insert previous examples here ***/
+
+const typeVariant = {
+    /*** Insert previous examples here ***/
+}
+
+const sizeVariant = {
+    /*** Insert previous examples here ***/
+}
 
 export const ThemedButton = styled.button(typeVariant, sizeVariant);
 ```
