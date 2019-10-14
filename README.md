@@ -1,4 +1,3 @@
-
 <h1 align="center" text-align="center">
     <img height="70px" width="70px" src="https://octodex.github.com/images/daftpunktocat-guy.gif">
    styled-variants
@@ -21,6 +20,7 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 
 ## Table Of Contents
 
+- [Table Of Contents](#table-of-contents)
 - [Why Another Theming Library?](#why-another-theming-library)
 - [Install](#install)
 - [Usage](#usage)
@@ -30,8 +30,12 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
   - [Combining Variants](#combining-variants)
   - [Pseudo Class Support](#pseudo-class-support)
   - [Global Theming](#global-theming)
+  - [**Global theming continued**](#global-theming-continued)
 - [Contributing](#contributing)
 - [License](#license)
+
+-   [Contributing](#contributing)
+-   [License](#license)
 
 ## Why Another Theming Library?
 
@@ -64,10 +68,10 @@ If we expect to write our HTML like this:
 <ThemedButton size="small" />
 ```
 
-
 Behind the scenes, the standard approach to define the variants is to write a `styled-component` that uses ternary switches within the template literal definition:
 
 <img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/red/x-mark-xxl.png"> **DIFFICULT TO READ**
+
 ```js
 export const Button = styled.button`
     padding: ${props =>
@@ -84,6 +88,7 @@ export const Button = styled.button`
             : "1rem"};
 `;
 ```
+
 This is not only difficult to read, but it's not scalable.
 
 **_Imagine_** what it would look like if we had even more size options or if "size" affected more css attributes!
@@ -91,10 +96,12 @@ This is not only difficult to read, but it's not scalable.
 This is the problem `styled-variants` is aiming to address.
 
 With `styled-variants`, we can see easily:
+
 1. What is included in each variant, and
 2. What the css values will be without having to parse multiple levels of conditionals:
 
 <img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/green/check-mark-3-xxl.png"> **EASIER TO READ**
+
 ```js
 import styled from "styled-components";
 import createTheme from "styled-variants";
@@ -194,6 +201,9 @@ const typeVariant = ButtonTheme.variant("type", {
         },
         isActive: {
             boxShadow: "0px 0px 1px 1px blue",
+            isPurple: {
+                backgroundColor: "purple",
+            },
         },
     },
 });
@@ -222,17 +232,13 @@ const MyApp = () => {
 Thankfully, `styled-components` allows for multiple sets of first class objects, so we can do the following to combine our variants:
 
 ```js
-
-const typeVariant = {
-    /*** Insert previous examples here ***/
-}
-
-const sizeVariant = {
-    /*** Insert previous examples here ***/
-}
+const typeVariant = /* previous example's typeVariant code */
+const sizeVariant = /* previous example's sizeVariant code */
 
 export const ThemedButton = styled.button(typeVariant, sizeVariant);
 ```
+
+The higher the index of the parameter, the higher the precedence. In this case, if there were conflicting styles between the variants, the `sizeVariant` styles would overwrite the conflicting value of the `typeVariant`.
 
 ---
 
@@ -269,7 +275,6 @@ const typeVariant = ButtonTheme.variant("type", {
 In previous examples, we created our theme named `Button`, so at the root of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
 
 ```js
-// App.js
 const MyApp = () => {
     return (
         <ThemeProvider
@@ -283,6 +288,52 @@ const MyApp = () => {
             }}>
             <ThemedButton />
             <ThemedButton isDisabled />
+        </ThemeProvider>
+    );
+};
+```
+
+---
+
+### **Global theming continued**
+
+Sometimes we want to change our entire app's styles based on a `ThemeProvider` value, rather than a local prop value. We can do that via the `globalVariant` function:
+
+```js
+import styled from "styled-components";
+import createTheme from "styled-variants";
+
+const ButtonTheme = createTheme("Button");
+
+export const modeGlobalVariant = ButtonTheme.globalVariant("mode", {
+    soft: {
+        borderRadius: "50px",
+    },
+    hard: {
+        borderRadius: "3px",
+    },
+});
+
+export const ThemedButton = styled.button(modeGlobalVariant);
+```
+
+then make sure we pass the "mode" `globalVariant` via the `ThemeProvider`:
+
+```js
+const MyApp = () => {
+    const [mode, setMode] = useState("soft");
+
+    return (
+        <ThemeProvider
+            theme={{
+                mode,
+            }}>
+            <ThemedButton onClick={() => setMode("soft")}>
+                Set Soft Mode
+            </ThemedButton>
+            <ThemedButton onClick={() => setMode("hard")}>
+                Set Hard Mode
+            </ThemedButton>
         </ThemeProvider>
     );
 };

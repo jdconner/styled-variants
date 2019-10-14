@@ -33,20 +33,26 @@ export const variantVariant = ButtonTheme.variant("variant", {
     isDisabled: {
         opacity: 0.5,
         cursor: "default",
-        pointerEvents: "none",
+        "&:focus": {},
+        "&:hover": {},
+        outline: "none",
     },
     primary: {
         ...defaultVariantStyles,
-        borderRadius: "3em",
-        isActive: {
-            backgroundColor: ({ theme }) => theme.colors.primary,
-            color: ({ theme }) => theme.colors.white,
-        },
         "&:hover": {
             borderColor: ({ theme }) => shadeColor(theme.colors.primary, -20),
         },
         "&:focus": {
             borderColor: ({ theme }) => shadeColor(theme.colors.primary, -40),
+        },
+        isActive: {
+            backgroundColor: ({ theme }) => theme.colors.primary,
+            color: ({ theme }) => theme.colors.white,
+            isDisabled: {
+                isPurple: {
+                    backgroundColor: "purple",
+                },
+            },
         },
     },
     secondary: {
@@ -56,5 +62,14 @@ export const variantVariant = ButtonTheme.variant("variant", {
         "&:hover, &:focus": {
             borderColor: ({ theme }) => shadeColor(theme.colors.primary, -20),
         },
+    },
+});
+
+export const appTypeVariant = ButtonTheme.globalVariant("appType", {
+    consumer: {
+        borderRadius: "50px",
+    },
+    agent: {
+        borderRadius: "5px",
     },
 });
