@@ -1,7 +1,8 @@
+
 <h1 align="center" text-align="center">
     <img height="70px" width="70px" src="https://octodex.github.com/images/daftpunktocat-guy.gif">
-     styled-variants
-    <img height="70px" width="70px" src="https://octodex.github.com/images/daftpunktocat-thomas.gif">
+   styled-variants
+   <img height="70px" width="70px" src="https://octodex.github.com/images/daftpunktocat-thomas.gif">
 </h1>
 
 <p align="center">
@@ -15,6 +16,8 @@
 A scalable styled-component theming system that fully leverages JavaScript as a language for styles authoring and theming at both local and global levels.
 </p>
 <br>
+
+> Note: This was create specifically for `styled-components` but can also be used with `@emotion/styled`
 
 <h2>
  Table of contents
