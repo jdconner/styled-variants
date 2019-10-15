@@ -16,7 +16,7 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 </p>
 <br>
 
-> Note: This was create specifically for `styled-components` but can also be used with `@emotion/styled`.
+> Note: This was created specifically for `styled-components` but can also be used with `@emotion/styled`.
 
 ## Table Of Contents
 
