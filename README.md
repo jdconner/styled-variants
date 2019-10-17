@@ -18,6 +18,8 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 
 > Note: This was created specifically for `styled-components` but can also be used with `@emotion/styled`.
 
+> Note: the API has changed for v2. You can find the docs for v1 [here](https://github.com/jdconner/styled-variants/blob/b106524f3afd0b33282a029afa655a26c4a16b81/README.md)
+
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
@@ -25,12 +27,13 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 - [Install](#install)
 - [Usage](#usage)
   - [Basic](#basic)
-  - [Passing Props](#passing-props)
+  - [Access to Props](#access-to-props)
+  - [Multiple Variants](#multiple-variants)
   - [Boolean Variants](#boolean-variants)
-  - [Combining Variants](#combining-variants)
+  - [Combining Themes](#combining-themes)
   - [Pseudo Class Support](#pseudo-class-support)
   - [Global Variant Theming](#global-variant-theming)
-  - [Globally Theming A Specific Component Type](#globally-theming-a-specific-component-type)
+  - [Globally Theming a Specific Component Type](#globally-theming-a-specific-component-type)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -65,14 +68,17 @@ See our Buttons [example code](https://github.com/jdconner/styled-variants/tree/
 If we expect to write our HTML like this:
 
 ```html
-<!-- takes default/medium styles -->
-<ThemedButton />
+<!-- applies global theme to each styled component -->
+<ThemeProvider theme={{ mode: 'dark' }}>
+    <!-- takes default/medium styles -->
+    <ThemedButton />
 
-<!-- takes large styles -->
-<ThemedButton size="large" />
+    <!-- takes large styles -->
+    <ThemedButton size="large" />
 
-<!-- takes small styles -->
-<ThemedButton size="small" />
+    <!-- takes small styles -->
+    <ThemedButton size="small" />
+</ThemeProvider>
 ```
 
 The standard approach to define the "size" variant is to write a `styled-component` that uses ternary switches within the template literal definition:
@@ -99,6 +105,12 @@ export const Button = styled.button`
             : props.size === "small"
             ? "0.8rem"
             : "1rem"};
+    background-color: ${props =>
+        props.theme.mode === "light"
+            ? "white"
+            : props.theme.mode === "dark"
+            ? "black"
+            : "transparent"};
 `;
 ```
 
@@ -117,9 +129,7 @@ With `styled-variants`, we can easily see:
 import styled from "styled-components";
 import createTheme from "styled-variants";
 
-const ButtonTheme = createTheme("Button");
-
-const sizeVariant = ButtonTheme.variant("size", {
+const size = {
     small: {
         padding: "0.3em 0.7em",
         margin: "0.1em 0.5em",
@@ -130,20 +140,34 @@ const sizeVariant = ButtonTheme.variant("size", {
         margin: "0.3em 0.7em",
         fontSize: "1.2rem",
     },
-});
+};
+
+const mode = {
+    light: {
+        backgroundColor: "white",
+    },
+    dark: {
+        backgroundColor: "black",
+    },
+};
+
+const ButtonTheme = createTheme("Button")
+    .addVariant("size", size)
+    .addGlobalVariant("type", type);
 
 const Button = styled.button`
     padding: 0.7em 1em;
     margin: 0.2em 0.6em;
     font-size: 1rem;
+    background-color: transparent;
 `;
 
-export const ThemedButton = styled(Button)(sizeVariant);
+export const ThemedButton = styled(Button)(ButtonTheme);
 ```
 
 ---
 
-### Passing Props
+### Access to Props
 
 Just like `styled-components`, `styled-variants` also supports passing of props via function:
 
@@ -151,15 +175,15 @@ Just like `styled-components`, `styled-variants` also supports passing of props 
 import styled from "styled-components";
 import createTheme from "styled-variants";
 
-const ButtonTheme = createTheme("Button");
-
-export const typeVariant = ButtonTheme.variant("type", {
+const type = {
     secondary: {
         color: "black",
         borderColor: ({ theme }) => theme.colors.secondary,
         backgroundColor: ({ theme }) => theme.colors.primary,
     },
-});
+};
+
+const ButtonTheme = createTheme("Button").addVariant("type", type);
 
 const Button = styled.button`
     color: white;
@@ -167,7 +191,7 @@ const Button = styled.button`
     backgroundcolor: ${({ theme }) => theme.colors.secondary};
 `;
 
-export const ThemedButton = styled.button(typeVariant);
+export const ThemedButton = styled(Button)(ButtonTheme);
 ```
 
 Then we can use `styled-components`'s `ThemeProvider` to inject a theme into the props of our `ThemedButton`:
@@ -193,12 +217,31 @@ const MyApp = () => {
 
 ---
 
+### Multiple Variants
+
+To add multiple variants, all you need to do is continue chaining your variants:
+
+```js
+const type = /* previous example's type variant code */;
+const size = /* previous example's size variant code */;
+
+const ButtonTheme = createTheme("Button")
+    .addVariant("type", type)
+    .addVariant("size", size);
+
+export const ThemedButton = styled.button(ButtonTheme);
+```
+
+The higher the index of the function call, the higher the precedence. In this case, if there were conflicting styles between the variants, the `size` styles would overwrite the conflicting value of the `type`.
+
+---
+
 ### Boolean Variants
 
 If we have separate states (e.g. isDisabled, isActive, isOpen, etc) for each variant, we can easily incorporate those too:
 
 ```js
-const typeVariant = ButtonTheme.variant("type", {
+const typeVariant = ButtonTheme.addVariant("type", {
     isDisabled: {
         opacity: 0.5,
         cursor: "default",
@@ -239,18 +282,27 @@ const MyApp = () => {
 
 ---
 
-### Combining Variants
+### Combining Themes
 
-Thankfully, `styled-components` allows for multiple sets of objects, so we can do the following to combine our variants:
+Thankfully, `styled-components` allows for multiple sets of objects when creating a styled component, so we can do the following to combine our themes:
 
 ```js
-const typeVariant = /* previous example's typeVariant code */
-const sizeVariant = /* previous example's sizeVariant code */
+const type = /* previous example's type variant code */;
+const size = /* previous example's size variant code */;
 
-export const ThemedButton = styled.button(typeVariant, sizeVariant);
+const BaseButtonTheme = createTheme("BaseButton")
+    .addVariant("type", type)
+    .addVariant("size", size);
+
+const shape = /* shape variant code */;
+
+const ShapedButtonTheme = createTheme("ShapedButton")
+    .addVariant("shape", shape);
+
+export const ThemedButton = styled.button(BaseButtonTheme, ShapedButtonTheme);
 ```
 
-The higher the index of the parameter, the higher the precedence. In this case, if there were conflicting styles between the variants, the `sizeVariant` styles would overwrite the conflicting value of the `typeVariant`.
+Again, the higher the index of the parameter, the higher the precedence. In this case, if there were conflicting styles between the themes, the `ShapedButtonTheme` styles would overwrite the conflicting value of the `BaseButtonTheme`.
 
 ---
 
@@ -261,10 +313,7 @@ To add pseudo classes we need to make it a valid key. This is done simply by wra
 ```js
 import createTheme from "styled-variants";
 
-const ButtonTheme = createTheme("Button");
-
-const typeVariant = ButtonTheme.variant("type", {
-    ...defaultTypeStyles,
+const type = {
     primary: {
         color: "green",
         "&:hover": {
@@ -277,7 +326,9 @@ const typeVariant = ButtonTheme.variant("type", {
             color: "purple",
         },
     },
-});
+};
+
+const ButtonTheme = createTheme("Button").addVariant("type", type);
 ```
 
 ---
@@ -290,18 +341,21 @@ Sometimes we want to change our entire app's styles based on a `ThemeProvider` v
 import styled from "styled-components";
 import createTheme from "styled-variants";
 
-const ButtonTheme = createTheme("Button");
-
-export const modeGlobalVariant = ButtonTheme.globalVariant("mode", {
+const size = /* previous example's size variant code */;
+const mode = {
     soft: {
         borderRadius: "50px",
     },
     hard: {
         borderRadius: "3px",
     },
-});
+};
 
-export const ThemedButton = styled.button(modeGlobalVariant);
+const ButtonTheme = createTheme("Button")
+    .addVariant("size", size)
+    .addGlobalVariant("mode", mode);
+
+export const ThemedButton = styled.button(ButtonTheme);
 ```
 
 then make sure we pass the "mode" `globalVariant` via the `ThemeProvider`:
@@ -328,9 +382,17 @@ const MyApp = () => {
 
 ---
 
-### Globally Theming A Specific Component Type
+### Globally Theming a Specific Component Type
 
-In previous examples, we created our theme named `Button`, so at the root of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
+In previous examples, we created our theme named `Button`:
+
+```js
+const ButtonTheme = createTheme("Button")
+    .addVariant("size", size)
+    .addGlobalVariant("mode", mode);
+```
+
+so at the root of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
 
 ```js
 const MyApp = () => {
