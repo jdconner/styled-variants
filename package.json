@@ -1,9 +1,9 @@
 {
     "name": "styled-variants",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "A scalable styled-component theming system that fully leverages JavaScript as a language for styles authoring and theming.",
     "author": "Justin Conner <justindconner2@gmail.com> (https://justinconner.dev/)",
-    "homepage": "https://github.com/jdconner/styled-variants",
+    "homepage": "https://github.com/jdconner/styled-variants/blob/master/README.md",
     "license": "MIT",
     "keywords": [
         "styled-variants",
@@ -24,7 +24,7 @@
         "test": "node test/test.js",
         "example": "(cd ./example && npm run start)",
         "pretest": "npm run build",
-        "publish": "npm run build && npm publish --access public"
+        "publish": "npm run build && npm publish"
     },
     "dependencies": {
         "lodash.defaultsdeep": "^4.6.1"

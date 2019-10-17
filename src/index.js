@@ -1,5 +1,3 @@
-"use strict";
-
 import defaultsDeep from "lodash.defaultsdeep";
 
 function _isObject(value) {
@@ -25,7 +23,8 @@ function parseForBooleanVariants(props, sheet) {
                 };
             }
 
-            // ? Removes excess key/values that do not apply to reduce the number of styles created by styled-components
+            // * Removes excess key/values that do not apply to
+            // * reduce the number of styles created by styled-components
             delete variantSheet[key];
         }
     }
@@ -33,30 +32,21 @@ function parseForBooleanVariants(props, sheet) {
     return variantSheet;
 }
 
-function normalizeStylesheet(
-    props,
-    componentName,
-    variantStylesheet,
-    variantPropValue
-) {
-    const globalComponentStylesheet = props.theme[componentName] || {};
-    const stylesheet = defaultsDeep(
-        { ...variantStylesheet },
-        globalComponentStylesheet
-    ); // ? Local takes precedence over global because of higher specificity
+function normalizeStylesheet(props, variantStylesheet, variantPropValue) {
     const stylesheetVariant =
-        (variantPropValue && stylesheet[variantPropValue]) || {};
+        (variantPropValue && variantStylesheet[variantPropValue]) || {};
+
     let variantSheet = parseForBooleanVariants(
         props,
-        defaultsDeep({ ...stylesheetVariant }, stylesheet)
+        defaultsDeep({ ...stylesheetVariant }, variantStylesheet)
     );
 
     for (let [key, value] of Object.entries(variantSheet)) {
-        // ? Support passing of props to functions
+        // * Support passing of props to functions
         if (_isFunction(value)) {
             variantSheet[key] = value(props);
         } else if (_isPseudoClass(key)) {
-            // ? Support pseudo-class functions
+            // * Support pseudo-class functions
             let newPseudoValues = {};
 
             for (let [pseudoKey, pseudoValue] of Object.entries(
@@ -74,35 +64,52 @@ function normalizeStylesheet(
     return variantSheet;
 }
 
-function globalVariant(componentName, variantName, variantStylesheet = {}) {
-    return function(props) {
-        const variantPropValue = props.theme[variantName];
-        return normalizeStylesheet(
-            props,
-            componentName,
-            variantStylesheet,
-            variantPropValue
-        );
-    };
-}
+function theme(componentName, x) {
+    function self(props) {
+        const globalComponentStylesheet = props.theme[componentName] || {};
 
-function variant(componentName, variantName, variantStylesheet = {}) {
-    return function(props) {
-        const variantPropValue = props[variantName];
-        return normalizeStylesheet(
-            props,
-            componentName,
-            variantStylesheet,
-            variantPropValue
+        // * Local takes precedence over global because of higher specificity
+        return defaultsDeep(
+            ...self.styles.map(func => func(props)),
+            globalComponentStylesheet
         );
-    };
-}
+    }
 
-function theme(componentName) {
-    return {
-        variant: variant.bind(null, componentName),
-        globalVariant: globalVariant.bind(null, componentName),
+    self.styles = [];
+
+    self.addVariant = function(variantName, variantStylesheet) {
+        function variant(props) {
+            const variantPropValue = props[variantName];
+
+            return normalizeStylesheet(
+                props,
+                variantStylesheet,
+                variantPropValue
+            );
+        }
+
+        this.styles.push(variant);
+
+        return this;
     };
+
+    self.addGlobalVariant = function(variantName, variantStylesheet) {
+        function globalVariant(props) {
+            const variantPropValue = props.theme[variantName];
+
+            return normalizeStylesheet(
+                props,
+                variantStylesheet,
+                variantPropValue
+            );
+        }
+
+        this.styles.push(globalVariant);
+
+        return this;
+    };
+
+    return self;
 }
 
 export default theme;

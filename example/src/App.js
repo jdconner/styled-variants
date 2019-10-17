@@ -17,7 +17,11 @@ function App() {
             theme={{
                 colors: colors[mode],
                 appType,
-                Button: { userSelect: "none", cursor: "pointer" },
+                Button: {
+                    userSelect: "none",
+                    cursor: "pointer",
+                    secondary: { fontFamily: "cursive" },
+                },
             }}>
             <GlobalStyle />
             <main>
