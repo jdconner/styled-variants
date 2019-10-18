@@ -39,30 +39,23 @@ const primary = {
 };
 
 const variant = {
-    isDisabled,
     primary: {
         ...primary,
-        "&:hover": {
-            borderColor: ({ theme }) => shadeColor(theme.colors.primary, -20),
-        },
-        "&:focus": {
-            borderColor: ({ theme }) => shadeColor(theme.colors.primary, -40),
+        "!isDisabled": {
+            "&:hover": {
+                borderColor: ({ theme }) =>
+                    shadeColor(theme.colors.primary, -20),
+            },
+            "&:focus": {
+                borderColor: ({ theme }) =>
+                    shadeColor(theme.colors.primary, -40),
+            },
         },
         isActive: {
             backgroundColor: ({ theme }) => theme.colors.primary,
             color: ({ theme }) => theme.colors.white,
         },
         isDisabled: {
-            ...primary,
-            ...isDisabled,
-            "&:hover": {
-                cursor: "initial",
-                borderColor: ({ theme }) => theme.colors.primary,
-            },
-            "&:focus": {
-                cursor: "initial",
-                borderColor: ({ theme }) => theme.colors.primary,
-            },
             isPurple: {
                 backgroundColor: "purple",
             },
@@ -82,8 +75,11 @@ const variant = {
 };
 
 export const ButtonTheme = createTheme("Button", {
-    "&:hover": {
-        borderColor: ({ theme }) => theme.colors.blue,
+    isDisabled,
+    "!isDisabled": {
+        "&:hover": {
+            borderColor: ({ theme }) => theme.colors.blue,
+        },
     },
 })
     .addVariant("size", size)

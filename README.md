@@ -20,14 +20,14 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 
 > Note: the API has changed for v2. You can find the docs for v1 [here](https://github.com/jdconner/styled-variants/blob/b106524f3afd0b33282a029afa655a26c4a16b81/README.md)
 
-## Table Of Contents
+<h2>Table Of Contents</h2>
 
-- [Table Of Contents](#table-of-contents)
 - [Why Another Theming Library?](#why-another-theming-library)
 - [Install](#install)
 - [Usage](#usage)
   - [Basic](#basic)
   - [Boolean Variants](#boolean-variants)
+  - [Boolean Variant Negation](#boolean-variant-negation)
   - [Access to Props](#access-to-props)
   - [Multiple Variants](#multiple-variants)
   - [Combining Themes](#combining-themes)
@@ -35,7 +35,6 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
   - [Global Variant Theming](#global-variant-theming)
   - [Globally Theming a Specific Component Type](#globally-theming-a-specific-component-type)
 - [FAQ](#faq)
-  - [How do I override pseudo classes?](#how-do-i-override-pseudo-classes)
   - [I have a super complex variant that I need to add, will this library support it?](#i-have-a-super-complex-variant-that-i-need-to-add-will-this-library-support-it)
 - [Contributing](#contributing)
 - [License](#license)
@@ -216,6 +215,30 @@ const MyApp = () => {
 
 ---
 
+### Boolean Variant Negation
+
+Most actionable elements (e.g. inputs, buttons, etc) will accept a `disabled` or `isDisabled` prop that removes hover/focus visual states. We can easily apply that logic by prefixing the boolean variant name with a `!` just like in JavaScript:
+
+```js
+const typeVariant = ButtonTheme.addVariant("type", {
+    isDisabled: {
+        opacity: 0.5,
+        cursor: "default",
+        pointerEvents: "none",
+    },
+    secondary: {
+        backgroundColor: "cyan",
+        "!isDisabled": {
+            "&:hover, &:focus": {
+                backgroundColor: "blue",
+            },
+        },
+    },
+});
+```
+
+---
+
 ### Access to Props
 
 Just like `styled-components`, `styled-variants` also supports passing of props via function:
@@ -327,7 +350,7 @@ const type = {
     },
     secondary: {
         color: "black",
-        "&:focus": {
+        "&:hover, &:focus": {
             color: "purple",
         },
     },
@@ -398,6 +421,7 @@ const ButtonTheme = createTheme("Button")
 ```
 
 If we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider` in our app's root:
+
 ```js
 const MyApp = () => {
     return (
@@ -416,48 +440,12 @@ const MyApp = () => {
     );
 };
 ```
+
 > Note: We do **NOT** currently support basic variants, but do have support for boolean variants.
 
 ---
 
 ## FAQ
-
-### How do I override pseudo classes?
-
-A common need to override pseudo classes relates to `disabled` states. For example, a tooltip that would display why a component is disabled when hovered. When something is `disabled`, we normally want to remove some functionality. We can do that by setting the attributes back to the base values. This is accomplished by assigning base values their own variable:
-
-```js
-const isDisabled = {
-    opacity: 0.5,
-    cursor: "default",
-    outline: "none",
-};
-
-const primaryBaseStyles = {
-    color: "white",
-    borderColor: "purple",
-    borderRadius: "5px",
-};
-
-const variant = {
-    isDisabled,
-    primary: {
-        ...primaryBaseStyles,
-        "&:focus": {
-            color: "green",
-            cursor: "pointer",
-        },
-        isDisabled: {
-            "&:focus": {
-                ...primaryBaseStyles,
-                cursor: "initial",
-            },
-        },
-    },
-};
-
-export const ButtonTheme = createTheme("Button").addVariant("variant", variant);
-```
 
 ### I have a super complex variant that I need to add, will this library support it?
 

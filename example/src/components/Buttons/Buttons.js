@@ -24,11 +24,11 @@ export default () => {
             <Container>
                 <div>Combined:</div>
                 <div>
-                    <ThemedButton
-                        size="large"
-                        variant="primary"
-                        borderColor="purple">
+                    <ThemedButton size="large" variant="primary">
                         Large Primary
+                    </ThemedButton>
+                    <ThemedButton variant="primary">
+                        Default Primary
                     </ThemedButton>
                     <ThemedButton size="small" variant="primary">
                         Small Primary
@@ -36,8 +36,14 @@ export default () => {
                     <ThemedButton size="large" variant="secondary">
                         Large Secondary
                     </ThemedButton>
+                    <ThemedButton variant="secondary">
+                        Default Secondary
+                    </ThemedButton>
                     <ThemedButton size="small" variant="secondary">
                         Small Secondary
+                    </ThemedButton>
+                    <ThemedButton>
+                        Default Default
                     </ThemedButton>
                 </div>
             </Container>
