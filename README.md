@@ -217,7 +217,7 @@ const MyApp = () => {
 
 ### Boolean Variant Negation
 
-Most actionable elements (e.g. inputs, buttons, etc) will accept a `disabled` or `isDisabled` prop that removes hover/focus visual states. We can apply that logic by prefixing the boolean variant name with a `!` just like in JavaScript:
+Most actionable elements (e.g. inputs, buttons, etc) will accept a `disabled` or `isDisabled` prop that removes hover/focus visual states. We can easily apply that logic by prefixing the boolean variant name with a `!` just like in JavaScript:
 
 ```js
 const typeVariant = ButtonTheme.addVariant("type", {
