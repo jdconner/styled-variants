@@ -46,15 +46,15 @@ At [Remine](https://remine.com/info/careers/), we not only have _multiple global
 
 Most theming systems for `styled-components` available today spit out string values (e.g. [styled-theming](https://github.com/styled-components/styled-theming), [styled-theme](https://github.com/diegohaz/styled-theme)) which can add code bloat since you still need to assign the theme value to a css property. `styled-variants` takes advantage of the first-class object functionality that `styled-components` has added in [version 3.3.0](https://spectrum.chat/styled-components/general/v3-3-0-is-out-with-first-class-object-support~2b5fd935-fb1d-480d-a524-95ecd540a1ac) to help reduce this bloat and allow for cleaner, scalable theming.
 
-What this library is looking to empower and contain:
+This goals of this library are:
 
 1. Scalable theming
-2. Both local variant (passed via props) and global variant (passed via ThemeProvider) support
-3. Multiple variants support
-4. Remove redundant code (by taking advantage of the first-class object functionality stated above)
-5. Small distribution size
+2. Support local (passed via props) and global (passed via ThemeProvider) variants
+3. Support multiple variants
+4. Eliminate redundant code (by taking advantage of the first-class object functionality stated above)
+5. Minimal distribution size
 
-All while encouraging clean, human-readable code.
+We want to do this while encouraging and enabling clean, human-readable code.
 
 ## Install
 
@@ -117,7 +117,7 @@ export const Button = styled.button`
 `;
 ```
 
-This is not only difficult to read, but it also does not scale well.
+This fails to meet our objectives on two fronts: it is difficult to read and does not scale well.
 
 **_Imagine_** what it would look like if we had even more size options or if "size" affected more css attributes!
 
@@ -161,7 +161,7 @@ const ButtonTheme = createTheme("Button", {
     backgroundColor: "transparent",
 })
     .addVariant("size", size)
-    .addGlobalVariant("type", type);
+    .addGlobalVariant("mode", mode);
 
 export const ThemedButton = styled.button(ButtonTheme);
 ```
@@ -170,7 +170,9 @@ export const ThemedButton = styled.button(ButtonTheme);
 
 ### Boolean Variants
 
-Another issues with most theming libraries is that they do not support multiple variants very well. If we have separate states (e.g. isDisabled, isActive, isOpen, etc) for each variant, we can easily incorporate those too:
+Another pain point with most theming libraries is the lack of support for multiple variants.
+
+If we have separate states (e.g. isDisabled, isActive, isOpen, etc) for each variant, we can easily incorporate those too:
 
 ```js
 const typeVariant = ButtonTheme.addVariant("type", {
@@ -279,7 +281,9 @@ const ButtonTheme = createTheme("Button")
 export const ThemedButton = styled.button(ButtonTheme);
 ```
 
-The higher the index of the function call, the higher the precedence. In this case, if there were conflicting styles between the variants, the `size` styles would overwrite the conflicting value of the `type`.
+Precedence is set based on the order of the function calls. The later the function is called, the greater the precedence.
+
+In this case, if there were conflicting styles between the variants, the `size` styles would overwrite the conflicting value of the `type`.
 
 ---
 
@@ -303,7 +307,7 @@ const ShapedButtonTheme = createTheme("ShapedButton")
 export const ThemedButton = styled.button(BaseButtonTheme, ShapedButtonTheme);
 ```
 
-Again, the higher the index of the parameter, the higher the precedence. In this case, if there were conflicting styles between the themes, the `ShapedButtonTheme` styles would overwrite the conflicting value of the `BaseButtonTheme`.
+Again, precedence is set based on the function call order. In this case, if there were conflicting styles between the themes, the `ShapedButtonTheme` styles would overwrite the conflicting value of the `BaseButtonTheme`.
 
 ---
 
@@ -359,7 +363,7 @@ const ButtonTheme = createTheme("Button")
 export const ThemedButton = styled.button(ButtonTheme);
 ```
 
-then make sure we pass the "mode" `globalVariant` via the `ThemeProvider`:
+Then, to make use of the "mode", we pass the "mode" `globalVariant` via the `ThemeProvider`:
 
 ```js
 const MyApp = () => {
@@ -393,10 +397,7 @@ const ButtonTheme = createTheme("Button")
     .addGlobalVariant("mode", mode);
 ```
 
-so at the root of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
-
-> Note: this does **NOT** support basic variants, but does support boolean variants
-
+If we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider` in our app's root:
 ```js
 const MyApp = () => {
     return (
@@ -415,6 +416,7 @@ const MyApp = () => {
     );
 };
 ```
+> Note: We do **NOT** currently support basic variants, but do have support for boolean variants.
 
 ---
 
@@ -422,7 +424,7 @@ const MyApp = () => {
 
 ### How do I override pseudo classes?
 
-The best example of a need to override pseudo classes is the need for a `disabled` state that would still allow pointer events (probably to allow for a tooltip on hover to explain why the component is disabled). When something is `disabled`, we normally want to remove some functionality. We can easily do that by setting the attributes back to the base values, which can be easily done if we set out base values as their own variable:
+A common need to override pseudo classes relates to `disabled` states. For example, a tooltip that would display why a component is disabled when hovered. When something is `disabled`, we normally want to remove some functionality. We can do that by setting the attributes back to the base values. This is accomplished by assigning base values their own variable:
 
 ```js
 const isDisabled = {
@@ -459,7 +461,7 @@ export const ButtonTheme = createTheme("Button").addVariant("variant", variant);
 
 ### I have a super complex variant that I need to add, will this library support it?
 
-It honestly depends on the amount of complexity, but if your variants are super complex with a lot of pseudo classes and nested dynamic selectors, odds are that it will make less sense to use this library in this case. You can very easily combine both basic styled-component styles and styled-variant styles:
+It honestly depends on the amount of complexity, but if your variants are super complex with a lot of pseudo classes and nested dynamic selectors, odds are that it will make less sense to use this library in this case. You can very easily combine both basic `styled-component` styles and `styled-variant` styles:
 
 ```js
 const ButtonTheme = createTheme("Button").addVariant("size", size);
@@ -485,7 +487,7 @@ const StyledButton = styled(ButtonTheme)`
 
 Contributions are welcome. Standards have yet to be set but we will set these in the near future.
 
-To see you changes as you make them, an example app has been created. You can run it with:
+To see changes as you make them, an example app has been created. You can run it with:
 
 ```bash
 $ npm run example
