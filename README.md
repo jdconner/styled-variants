@@ -454,10 +454,7 @@ const variant = {
     },
 };
 
-export const ButtonTheme = createTheme("Button")
-    .addVariant("size", size)
-    .addVariant("variant", variant)
-    .addGlobalVariant("appType", appType);
+export const ButtonTheme = createTheme("Button").addVariant("variant", variant);
 ```
 
 ### I have a super complex variant that I need to add, will this library support it?
