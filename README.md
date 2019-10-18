@@ -20,9 +20,8 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 
 > Note: the API has changed for v2. You can find the docs for v1 [here](https://github.com/jdconner/styled-variants/blob/b106524f3afd0b33282a029afa655a26c4a16b81/README.md)
 
-## Table Of Contents
+<h2>Table Of Contents</h2>
 
-- [Table Of Contents](#table-of-contents)
 - [Why Another Theming Library?](#why-another-theming-library)
 - [Install](#install)
 - [Usage](#usage)
@@ -49,16 +48,10 @@ Most theming systems for `styled-components` available today spit out string val
 This goals of this library are:
 
 1. Scalable theming
-   <<<<<<< Updated upstream
 2. Support local (passed via props) and global (passed via ThemeProvider) variants
 3. Support multiple variants
 4. Eliminate redundant code (by taking advantage of the first-class object functionality stated above)
-5. # Minimal distribution size
-6. Both local variant (passed via props) and global variant (passed via ThemeProvider) support
-7. Multiple variants support
-8. Remove any redundant code
-9. Small distribution size
-    > > > > > > > Stashed changes
+5. Minimal distribution size
 
 We want to do this while encouraging and enabling clean, human-readable code.
 
@@ -224,7 +217,7 @@ const MyApp = () => {
 
 ### Boolean Variant Negation
 
-Most actionable elements (e.g. inputs, buttons, etc) will accept a `disabled` or `isDisabled` prop that removes hover/focus visual states.
+Most actionable elements (e.g. inputs, buttons, etc) will accept a `disabled` or `isDisabled` prop that removes hover/focus visual states. We can apply that logic by prefixing the boolean variant name with a `!` just like in JavaScript:
 
 ```js
 const typeVariant = ButtonTheme.addVariant("type", {
@@ -234,8 +227,9 @@ const typeVariant = ButtonTheme.addVariant("type", {
         pointerEvents: "none",
     },
     secondary: {
+        backgroundColor: "cyan",
         "!isDisabled": {
-            "&:hover": {
+            "&:hover, &:focus": {
                 backgroundColor: "blue",
             },
         },
@@ -356,7 +350,7 @@ const type = {
     },
     secondary: {
         color: "black",
-        "&:focus": {
+        "&:hover, &:focus": {
             color: "purple",
         },
     },
