@@ -2,4 +2,4 @@
 -   Make sure build is optimized
 -   Add tests
 -   Fix publish script? Tries to publish twice
--   Theme provider variable (i.e. app/mode) with local variants implementation
+-   Add a gif as an example

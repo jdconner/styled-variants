@@ -12,11 +12,24 @@ function _isPseudoClass(value) {
     return value.includes(":");
 }
 
+function _isNegation(value) {
+    return value.charAt(0) === "!";
+}
+
 function parseForBooleanVariants(props, sheet) {
     let variantSheet = { ...sheet };
     for (let [key, value] of Object.entries(variantSheet)) {
+        const shouldNegate = _isNegation(key);
+        let sanitizedKey = key;
+
+        if (shouldNegate) sanitizedKey = key.substring(1);
+
         if (_isObject(value) && !_isPseudoClass(key)) {
-            if (!!props[key] && variantSheet[key]) {
+            const shouldApplyVariant = shouldNegate
+                ? !props[sanitizedKey]
+                : !!props[sanitizedKey];
+
+            if (shouldApplyVariant) {
                 // * The more nested the values, the higher the precedence
                 variantSheet = defaultsDeep(
                     parseForBooleanVariants(props, variantSheet[key]),

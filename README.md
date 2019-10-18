@@ -28,6 +28,7 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 - [Usage](#usage)
   - [Basic](#basic)
   - [Boolean Variants](#boolean-variants)
+  - [Boolean Variant Negation](#boolean-variant-negation)
   - [Access to Props](#access-to-props)
   - [Multiple Variants](#multiple-variants)
   - [Combining Themes](#combining-themes)
@@ -35,7 +36,6 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
   - [Global Variant Theming](#global-variant-theming)
   - [Globally Theming a Specific Component Type](#globally-theming-a-specific-component-type)
 - [FAQ](#faq)
-  - [How do I override pseudo classes?](#how-do-i-override-pseudo-classes)
   - [I have a super complex variant that I need to add, will this library support it?](#i-have-a-super-complex-variant-that-i-need-to-add-will-this-library-support-it)
 - [Contributing](#contributing)
 - [License](#license)
@@ -49,10 +49,16 @@ Most theming systems for `styled-components` available today spit out string val
 This goals of this library are:
 
 1. Scalable theming
+   <<<<<<< Updated upstream
 2. Support local (passed via props) and global (passed via ThemeProvider) variants
 3. Support multiple variants
 4. Eliminate redundant code (by taking advantage of the first-class object functionality stated above)
-5. Minimal distribution size
+5. # Minimal distribution size
+6. Both local variant (passed via props) and global variant (passed via ThemeProvider) support
+7. Multiple variants support
+8. Remove any redundant code
+9. Small distribution size
+    > > > > > > > Stashed changes
 
 We want to do this while encouraging and enabling clean, human-readable code.
 
@@ -212,6 +218,29 @@ const MyApp = () => {
         </ThemeProvider>
     );
 };
+```
+
+---
+
+### Boolean Variant Negation
+
+Most actionable elements (e.g. inputs, buttons, etc) will accept a `disabled` or `isDisabled` prop that removes hover/focus visual states.
+
+```js
+const typeVariant = ButtonTheme.addVariant("type", {
+    isDisabled: {
+        opacity: 0.5,
+        cursor: "default",
+        pointerEvents: "none",
+    },
+    secondary: {
+        "!isDisabled": {
+            "&:hover": {
+                backgroundColor: "blue",
+            },
+        },
+    },
+});
 ```
 
 ---
@@ -398,6 +427,7 @@ const ButtonTheme = createTheme("Button")
 ```
 
 If we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider` in our app's root:
+
 ```js
 const MyApp = () => {
     return (
@@ -416,48 +446,12 @@ const MyApp = () => {
     );
 };
 ```
+
 > Note: We do **NOT** currently support basic variants, but do have support for boolean variants.
 
 ---
 
 ## FAQ
-
-### How do I override pseudo classes?
-
-A common need to override pseudo classes relates to `disabled` states. For example, a tooltip that would display why a component is disabled when hovered. When something is `disabled`, we normally want to remove some functionality. We can do that by setting the attributes back to the base values. This is accomplished by assigning base values their own variable:
-
-```js
-const isDisabled = {
-    opacity: 0.5,
-    cursor: "default",
-    outline: "none",
-};
-
-const primaryBaseStyles = {
-    color: "white",
-    borderColor: "purple",
-    borderRadius: "5px",
-};
-
-const variant = {
-    isDisabled,
-    primary: {
-        ...primaryBaseStyles,
-        "&:focus": {
-            color: "green",
-            cursor: "pointer",
-        },
-        isDisabled: {
-            "&:focus": {
-                ...primaryBaseStyles,
-                cursor: "initial",
-            },
-        },
-    },
-};
-
-export const ButtonTheme = createTheme("Button").addVariant("variant", variant);
-```
 
 ### I have a super complex variant that I need to add, will this library support it?
 
