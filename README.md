@@ -27,13 +27,16 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
 - [Install](#install)
 - [Usage](#usage)
   - [Basic](#basic)
+  - [Boolean Variants](#boolean-variants)
   - [Access to Props](#access-to-props)
   - [Multiple Variants](#multiple-variants)
-  - [Boolean Variants](#boolean-variants)
   - [Combining Themes](#combining-themes)
   - [Pseudo Class Support](#pseudo-class-support)
   - [Global Variant Theming](#global-variant-theming)
   - [Globally Theming a Specific Component Type](#globally-theming-a-specific-component-type)
+- [FAQ](#faq)
+  - [How do I override pseudo classes?](#how-do-i-override-pseudo-classes)
+  - [I have a super complex variant that I need to add, will this library support it?](#i-have-a-super-complex-variant-that-i-need-to-add-will-this-library-support-it)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -151,18 +154,62 @@ const mode = {
     },
 };
 
-const ButtonTheme = createTheme("Button")
+const ButtonTheme = createTheme("Button", {
+    padding: "0.7em 1em",
+    margin: "0.2em 0.6em",
+    fontSize: "1rem",
+    backgroundColor: "transparent",
+})
     .addVariant("size", size)
     .addGlobalVariant("type", type);
 
-const Button = styled.button`
-    padding: 0.7em 1em;
-    margin: 0.2em 0.6em;
-    font-size: 1rem;
-    background-color: transparent;
-`;
+export const ThemedButton = styled.button(ButtonTheme);
+```
 
-export const ThemedButton = styled(Button)(ButtonTheme);
+---
+
+### Boolean Variants
+
+Another issues with most theming libraries is that they do not support multiple variants very well. If we have separate states (e.g. isDisabled, isActive, isOpen, etc) for each variant, we can easily incorporate those too:
+
+```js
+const typeVariant = ButtonTheme.addVariant("type", {
+    isDisabled: {
+        opacity: 0.5,
+        cursor: "default",
+        pointerEvents: "none",
+    },
+    isActive: {
+        boxShadow: "0px 0px 1px 1px purple",
+    },
+    secondary: {
+        isDisabled: {
+            opacity: 0.7,
+        },
+        isActive: {
+            boxShadow: "0px 0px 1px 1px blue",
+            isPurple: {
+                backgroundColor: "purple",
+            },
+        },
+    },
+});
+```
+
+Then we can pass a prop value for `isDisabled` and `isActive`:
+
+```js
+const MyApp = () => {
+    const [isDisabled, setIsDisabled] = useState(false);
+
+    return (
+        <ThemeProvider theme={{ colors }}>
+            <ThemedButton isDisabled={isDisabled} type="secondary" />
+            <ThemedButton isDisabled={isDisabled} />
+            <ThemedButton isDisabled={isDisabled} type="secondary" isActive />
+        </ThemeProvider>
+    );
+};
 ```
 
 ---
@@ -236,52 +283,6 @@ The higher the index of the function call, the higher the precedence. In this ca
 
 ---
 
-### Boolean Variants
-
-If we have separate states (e.g. isDisabled, isActive, isOpen, etc) for each variant, we can easily incorporate those too:
-
-```js
-const typeVariant = ButtonTheme.addVariant("type", {
-    isDisabled: {
-        opacity: 0.5,
-        cursor: "default",
-        pointerEvents: "none",
-    },
-    isActive: {
-        boxShadow: "0px 0px 1px 1px purple",
-    },
-    secondary: {
-        isDisabled: {
-            opacity: 0.7,
-        },
-        isActive: {
-            boxShadow: "0px 0px 1px 1px blue",
-            isPurple: {
-                backgroundColor: "purple",
-            },
-        },
-    },
-});
-```
-
-Then we can pass a prop value for `isDisabled` and `isActive`:
-
-```js
-const MyApp = () => {
-    const [isDisabled, setIsDisabled] = useState(false);
-
-    return (
-        <ThemeProvider theme={{ colors }}>
-            <ThemedButton isDisabled={isDisabled} type="secondary" />
-            <ThemedButton isDisabled={isDisabled} />
-            <ThemedButton isDisabled={isDisabled} type="secondary" isActive />
-        </ThemeProvider>
-    );
-};
-```
-
----
-
 ### Combining Themes
 
 Thankfully, `styled-components` allows for multiple sets of objects when creating a styled component, so we can do the following to combine our themes:
@@ -322,7 +323,7 @@ const type = {
     },
     secondary: {
         color: "black",
-        "&:focus, &:hover": {
+        "&:focus": {
             color: "purple",
         },
     },
@@ -394,6 +395,8 @@ const ButtonTheme = createTheme("Button")
 
 so at the root of our app, if we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider`:
 
+> Note: this does **NOT** support basic variants, but does support boolean variants
+
 ```js
 const MyApp = () => {
     return (
@@ -411,6 +414,72 @@ const MyApp = () => {
         </ThemeProvider>
     );
 };
+```
+
+---
+
+## FAQ
+
+### How do I override pseudo classes?
+
+The best example of a need to override pseudo classes is the need for a `disabled` state that would still allow pointer events (probably to allow for a tooltip on hover to explain why the component is disabled). When something is `disabled`, we normally want to remove some functionality. We can easily do that by setting the attributes back to the base values, which can be easily done if we set out base values as their own variable:
+
+```js
+const isDisabled = {
+    opacity: 0.5,
+    cursor: "default",
+    outline: "none",
+};
+
+const primaryBaseStyles = {
+    color: "white",
+    borderColor: "purple",
+    borderRadius: "5px",
+};
+
+const variant = {
+    isDisabled,
+    primary: {
+        ...primaryBaseStyles,
+        "&:focus": {
+            color: "green",
+            cursor: "pointer",
+        },
+        isDisabled: {
+            "&:focus": {
+                ...primaryBaseStyles,
+                cursor: "initial",
+            },
+        },
+    },
+};
+
+export const ButtonTheme = createTheme("Button")
+    .addVariant("size", size)
+    .addVariant("variant", variant)
+    .addGlobalVariant("appType", appType);
+```
+
+### I have a super complex variant that I need to add, will this library support it?
+
+It honestly depends on the amount of complexity, but if your variants are super complex with a lot of pseudo classes and nested dynamic selectors, odds are that it will make less sense to use this library in this case. You can very easily combine both basic styled-component styles and styled-variant styles:
+
+```js
+const ButtonTheme = createTheme("Button").addVariant("size", size);
+
+const ThemedButton = styled.button(ButtonTheme);
+
+const StyledButton = styled(ButtonTheme)`
+    * + * {
+        div {
+            margin-bottom: 20px;
+
+            &:hover {
+                background-color: green;
+            }
+        }
+    }
+`;
 ```
 
 ---

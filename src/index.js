@@ -17,10 +17,11 @@ function parseForBooleanVariants(props, sheet) {
     for (let [key, value] of Object.entries(variantSheet)) {
         if (_isObject(value) && !_isPseudoClass(key)) {
             if (!!props[key] && variantSheet[key]) {
-                variantSheet = {
-                    ...variantSheet,
-                    ...parseForBooleanVariants(props, variantSheet[key]),
-                };
+                // * The more nested the values, the higher the precedence
+                variantSheet = defaultsDeep(
+                    parseForBooleanVariants(props, variantSheet[key]),
+                    variantSheet
+                );
             }
 
             // * Removes excess key/values that do not apply to
@@ -64,13 +65,16 @@ function normalizeStylesheet(props, variantStylesheet, variantPropValue) {
     return variantSheet;
 }
 
-function theme(componentName, x) {
+function theme(componentName, baseSheet = {}) {
     function self(props) {
-        const globalComponentStylesheet = props.theme[componentName] || {};
+        const globalComponentStylesheet =
+            parseForBooleanVariants(props, props.theme[componentName]) || {};
+        const baseStylesheet = normalizeStylesheet(props, baseSheet);
 
         // * Local takes precedence over global because of higher specificity
         return defaultsDeep(
             ...self.styles.map(func => func(props)),
+            baseStylesheet,
             globalComponentStylesheet
         );
     }

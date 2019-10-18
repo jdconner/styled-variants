@@ -20,7 +20,7 @@ function App() {
                 Button: {
                     userSelect: "none",
                     cursor: "pointer",
-                    secondary: { fontFamily: "cursive" },
+                    isActive: { fontFamily: "cursive", cursor: "help" },
                 },
             }}>
             <GlobalStyle />
