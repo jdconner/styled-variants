@@ -1,6 +1,6 @@
 {
     "name": "styled-variants",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "A scalable styled-component theming system that fully leverages JavaScript as a language for styles authoring and theming.",
     "author": "Justin Conner <justindconner2@gmail.com> (https://justinconner.dev/)",
     "homepage": "https://github.com/jdconner/styled-variants/blob/master/README.md",
