@@ -35,6 +35,7 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
   - [Global Variant Theming](#global-variant-theming)
   - [Globally Theming a Specific Component Type](#globally-theming-a-specific-component-type)
 - [FAQ](#faq)
+  - [Does this package work with `styled-system`?](#does-this-package-work-with-styled-system)
   - [I have a super complex variant that I need to add, will this library support it?](#i-have-a-super-complex-variant-that-i-need-to-add-will-this-library-support-it)
 - [Contributing](#contributing)
 - [License](#license)
@@ -446,6 +447,26 @@ const MyApp = () => {
 ---
 
 ## FAQ
+
+### Does this package work with `styled-system`?
+
+`styled-system` should be mainly used for rapid proto-typing, and `styled-variants` for consistent, long-term theming. Adding `styled-system` capabilities would really only lower performance and add complexity without adding too much gain, **BUT** the packages can be used side-by-side:
+
+```js
+import { space, typography } from "styled-system";
+import createTheme from "styled-variants";
+import styled from "styled-components";
+
+const size = /* previous example's size variant code */;
+
+const ButtonTheme = createTheme("Button").addVariant("size", size);
+
+const ThemedButton = styled.button(ButtonTheme, space, typography);
+
+<ThemedButton size="large" m={[2,4]} textAlign="center" />
+```
+
+> Note: Following the `styled-components` documentation, you're going to want `ButtonTheme` to be the first parameter so your `styled-system` props override any of the theme styles.
 
 ### I have a super complex variant that I need to add, will this library support it?
 
