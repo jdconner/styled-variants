@@ -27,8 +27,6 @@ const size = {
 const isDisabled = {
     opacity: 0.4,
     cursor: "default",
-    "&:focus": {},
-    "&:hover": {},
     outline: "none",
 };
 
@@ -78,7 +76,13 @@ export const ButtonTheme = createTheme("Button", {
     isDisabled,
     "!isDisabled": {
         "&:hover": {
+            color: ({ theme }) => theme.colors.blue,
+        },
+        "&:hover, &:focus": {
             borderColor: ({ theme }) => theme.colors.blue,
+        },
+        "&:focus": {
+            color: ({ theme }) => theme.colors.deepPurple,
         },
     },
 })
