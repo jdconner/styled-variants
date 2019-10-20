@@ -16,6 +16,10 @@ function _isNegation(value) {
     return value.charAt(0) === "!";
 }
 
+function _getList(value) {
+    return value.split(",").map(val => val.trim());
+}
+
 function parseForBooleanVariants(props, sheet) {
     let variantSheet = { ...sheet };
     for (let [key, value] of Object.entries(variantSheet)) {
@@ -71,7 +75,17 @@ function normalizeStylesheet(props, variantStylesheet, variantPropValue) {
                     : pseudoValue;
             }
 
-            variantSheet[key] = newPseudoValues;
+            if (key.includes(",")) {
+                _getList(key).forEach(key2 => {
+                    variantSheet[key2] = {
+                        ...variantSheet[key2],
+                        ...newPseudoValues,
+                    };
+                });
+                delete variantSheet[key];
+            } else {
+                variantSheet[key] = newPseudoValues;
+            }
         }
     }
 
@@ -81,7 +95,7 @@ function normalizeStylesheet(props, variantStylesheet, variantPropValue) {
 function theme(componentName, baseSheet = {}) {
     function self(props) {
         const globalComponentStylesheet =
-            parseForBooleanVariants(props, props.theme[componentName]) || {};
+            normalizeStylesheet(props, props.theme[componentName]) || {};
         const baseStylesheet = normalizeStylesheet(props, baseSheet);
 
         // * Local takes precedence over global because of higher specificity
