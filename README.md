@@ -175,7 +175,7 @@ Another pain point with most theming libraries is the lack of support for multip
 If we have separate states (e.g. isDisabled, isActive, isOpen, etc) for each variant, we can easily incorporate those too:
 
 ```js
-const typeVariant = ButtonTheme.addVariant("type", {
+const ButtonTheme = createTheme("Button").addVariant("type", {
     isDisabled: {
         opacity: 0.5,
         cursor: "default",
@@ -196,6 +196,8 @@ const typeVariant = ButtonTheme.addVariant("type", {
         },
     },
 });
+
+export const ThemedButton = styled.button(ButtonTheme);
 ```
 
 Then we can pass a prop value for `isDisabled` and `isActive`:
@@ -221,7 +223,7 @@ const MyApp = () => {
 Most actionable elements (e.g. inputs, buttons, etc) will accept a `disabled` or `isDisabled` prop that removes hover/focus visual states. We can easily apply that logic by prefixing the boolean variant name with a `!` just like in JavaScript:
 
 ```js
-const typeVariant = ButtonTheme.addVariant("type", {
+const ButtonTheme = createTheme("Button").addVariant("type", {
     isDisabled: {
         opacity: 0.5,
         cursor: "default",
