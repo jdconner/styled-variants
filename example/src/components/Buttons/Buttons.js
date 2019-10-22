@@ -1,12 +1,13 @@
 import React from "react";
 import { Container, ExampleContainer } from "../../App.styled";
 import { ThemedButton } from "./Buttons.styled";
+import Text from "../Text";
 
 export default () => {
     return (
         <ExampleContainer>
             <Container>
-                <div>Sizes:</div>
+                <Text>Sizes:</Text>
                 <div>
                     <ThemedButton size="large">Large</ThemedButton>
                     <ThemedButton>Default</ThemedButton>
@@ -14,7 +15,7 @@ export default () => {
                 </div>
             </Container>
             <Container>
-                <div>Variants:</div>
+                <Text>Variants:</Text>
                 <div>
                     <ThemedButton>Default</ThemedButton>
                     <ThemedButton variant="primary">Primary</ThemedButton>
@@ -22,7 +23,7 @@ export default () => {
                 </div>
             </Container>
             <Container>
-                <div>Combined:</div>
+                <Text>Combined:</Text>
                 <div>
                     <ThemedButton size="large" variant="primary">
                         Large Primary
@@ -42,13 +43,11 @@ export default () => {
                     <ThemedButton size="small" variant="secondary">
                         Small Secondary
                     </ThemedButton>
-                    <ThemedButton>
-                        Default Default
-                    </ThemedButton>
+                    <ThemedButton>Default Default</ThemedButton>
                 </div>
             </Container>
             <Container>
-                <div>Variants with boolean prop variants:</div>
+                <Text>Variants with boolean prop variants:</Text>
                 <div>
                     <ThemedButton variant="primary" isActive={true}>
                         Primary isActive

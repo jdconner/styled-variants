@@ -242,7 +242,7 @@ const typeVariant = ButtonTheme.addVariant("type", {
 
 ### Access to Props
 
-Just like `styled-components`, `styled-variants` also supports passing of props via function:
+Just like `styled-components`, `styled-variants` also supports passing of props via function at multiple levels:
 
 ```js
 import styled from "styled-components";
@@ -256,15 +256,20 @@ const type = {
     },
 };
 
-const ButtonTheme = createTheme("Button").addVariant("type", type);
+const mode = props => ({
+    light: {
+        backgroundColor: props.theme.colors.background.light,
+    },
+    dark: {
+        backgroundColor: props.theme.colors.background.dark,
+    },
+});
 
-const Button = styled.button`
-    color: white;
-    border: ${({ theme }) => `5px solid ${theme.colors.primary}`};
-    backgroundcolor: ${({ theme }) => theme.colors.secondary};
-`;
+const ButtonTheme = createTheme("Button")
+    .addVariant("type", type)
+    .addGlobalVariant("mode", mode);
 
-export const ThemedButton = styled(Button)(ButtonTheme);
+export const ThemedButton = styled.button(ButtonTheme);
 ```
 
 Then we can use `styled-components`'s `ThemeProvider` to inject a theme into the props of our `ThemedButton`:
@@ -276,6 +281,10 @@ import { ThemedButton } from "./ThemedButton.js";
 const colors = {
     primary: "#09d3ac",
     secondary: "#282c34",
+    background: {
+        dark: "black",
+        light: "white",
+    },
 };
 
 const MyApp = () => {
