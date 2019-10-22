@@ -96,7 +96,10 @@ function theme(componentName, baseSheet = {}) {
     function self(props) {
         const globalComponentStylesheet =
             normalizeStylesheet(props, props.theme[componentName]) || {};
-        const baseStylesheet = normalizeStylesheet(props, baseSheet);
+        const baseStylesheet = normalizeStylesheet(
+            props,
+            _isFunction(baseSheet) ? baseSheet(props) : baseSheet
+        );
 
         // * Local takes precedence over global because of higher specificity
         return defaultsDeep(
@@ -114,7 +117,9 @@ function theme(componentName, baseSheet = {}) {
 
             return normalizeStylesheet(
                 props,
-                variantStylesheet,
+                _isFunction(variantStylesheet)
+                    ? variantStylesheet(props)
+                    : variantStylesheet,
                 variantPropValue
             );
         }
@@ -130,7 +135,9 @@ function theme(componentName, baseSheet = {}) {
 
             return normalizeStylesheet(
                 props,
-                variantStylesheet,
+                _isFunction(variantStylesheet)
+                    ? variantStylesheet(props)
+                    : variantStylesheet,
                 variantPropValue
             );
         }

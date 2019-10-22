@@ -17,6 +17,7 @@ function App() {
             theme={{
                 colors: colors[mode],
                 appType,
+                textDecoration: "underline",
                 Button: {
                     userSelect: "none",
                     cursor: "pointer",
