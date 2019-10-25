@@ -94,8 +94,15 @@ function normalizeStylesheet(props, variantStylesheet, variantPropValue) {
 
 function theme(componentName, baseSheet = {}) {
     function self(props) {
-        const globalComponentStylesheet =
-            normalizeStylesheet(props, props.theme[componentName]) || {};
+        const globalValriantValue =
+            (props.theme &&
+                props.theme.components &&
+                props.theme.components[componentName]) ||
+            {};
+        const globalComponentStylesheet = normalizeStylesheet(
+            props,
+            globalValriantValue
+        );
         const baseStylesheet = normalizeStylesheet(
             props,
             _isFunction(baseSheet) ? baseSheet(props) : baseSheet

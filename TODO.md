@@ -4,3 +4,4 @@
 -   Fix publish script? Tries to publish twice
 -   Add a gif as an example
 -   Add caching (see styled-system)
+-   Create Compose function?

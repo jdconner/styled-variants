@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/badge/style-%F0%9F%92%85%20styled--components-orange.svg?colorB=daa357">
     <img src="https://img.shields.io/github/license/jdconner/styled-variants">
     <img src="https://img.shields.io/github/package-json/v/jdconner/styled-variants">
-    <img src="https://img.shields.io/github/size/jdconner/styled-variants/src/index.js">
+    <img src="https://img.shields.io/github/size/jdconner/styled-variants/dist/index.esm.js">
 </p>
 
 <p align="center" style="width: 100%; text-align: center; display: flex; justify-content: center;">
@@ -432,18 +432,22 @@ const ButtonTheme = createTheme("Button")
     .addGlobalVariant("mode", mode);
 ```
 
-If we'd like to globally style all of our buttons, we can do that by adding a `Button` key and the values we want to the `ThemeProvider` in our app's root:
-
+If we'd like to globally style all of our components that use the `Button` theme, we can do that by adding a `Button` key to `components` in our theme that we pass to the `ThemeProvider`:
 ```js
 const MyApp = () => {
     return (
         <ThemeProvider
             theme={{
                 colors,
-                Button: {
-                    userSelect: "none",
-                    cursor: "pointer",
-                    isDisabled: { cursor: "default", pointerEvents: "none" },
+                components: {
+                    Button: {
+                        userSelect: "none",
+                        cursor: "pointer",
+                        isDisabled: {
+                            cursor: "default",
+                            pointerEvents: "none",
+                        },
+                    },
                 },
             }}>
             <ThemedButton />

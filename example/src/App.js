@@ -18,10 +18,12 @@ function App() {
                 colors: colors[mode],
                 appType,
                 textDecoration: "underline",
-                Button: {
-                    userSelect: "none",
-                    cursor: "pointer",
-                    isActive: { fontFamily: "cursive", cursor: "help" },
+                components: {
+                    Button: {
+                        userSelect: "none",
+                        cursor: "pointer",
+                        isActive: { fontFamily: "cursive", cursor: "help" },
+                    },
                 },
             }}>
             <GlobalStyle />
