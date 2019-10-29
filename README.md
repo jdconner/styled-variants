@@ -9,8 +9,8 @@
     <img src="https://img.shields.io/github/license/jdconner/styled-variants">
     <img src="https://img.shields.io/github/package-json/v/jdconner/styled-variants">
     <img src="https://img.shields.io/github/size/jdconner/styled-variants/dist/index.esm.js">
+    <img src="https://img.shields.io/badge/dependencies-0-lightgrey">
 </p>
-
 <p align="center" style="width: 100%; text-align: center; display: flex; justify-content: center;">
 A scalable styled-component theming system that fully leverages JavaScript as a language for styles authoring and theming at both local and global levels.
 </p>
@@ -433,6 +433,7 @@ const ButtonTheme = createTheme("Button")
 ```
 
 If we'd like to globally style all of our components that use the `Button` theme, we can do that by adding a `Button` key to `components` in our theme that we pass to the `ThemeProvider`:
+
 ```js
 const MyApp = () => {
     return (
