@@ -1,11 +1,9 @@
-import defaultsDeep from "lodash.defaultsdeep";
-
 function _isObject(value) {
-    return value != null && typeof value === "object";
+    return value && typeof value === "object" && !Array.isArray(value);
 }
 
 function _isFunction(value) {
-    return value != null && typeof value === "function";
+    return value && typeof value === "function";
 }
 
 function _isPseudoClass(value) {
@@ -18,6 +16,34 @@ function _isNegation(value) {
 
 function _getList(value) {
     return value.split(",").map(val => val.trim());
+}
+
+function deepMerge(target, ...sources) {
+    const output = target;
+
+    if (_isObject(target)) {
+        sources.forEach(source => {
+            if (_isObject(source)) {
+                Object.keys(source).forEach(key => {
+                    // Avoid prototype pollution
+                    if (key === "__proto__") {
+                        return;
+                    }
+
+                    if (_isObject(source[key]) && key in target) {
+                        output[key] = deepMerge(
+                            { ...target[key] },
+                            source[key]
+                        );
+                    } else {
+                        output[key] = source[key];
+                    }
+                });
+            }
+        });
+    }
+
+    return output;
 }
 
 function parseForBooleanVariants(props, sheet) {
@@ -35,9 +61,9 @@ function parseForBooleanVariants(props, sheet) {
 
             if (shouldApplyVariant) {
                 // * The more nested the values, the higher the precedence
-                variantSheet = defaultsDeep(
-                    parseForBooleanVariants(props, variantSheet[key]),
-                    variantSheet
+                variantSheet = deepMerge(
+                    { ...variantSheet },
+                    parseForBooleanVariants(props, variantSheet[key])
                 );
             }
 
@@ -56,7 +82,7 @@ function normalizeStylesheet(props, variantStylesheet, variantPropValue) {
 
     let variantSheet = parseForBooleanVariants(
         props,
-        defaultsDeep({ ...stylesheetVariant }, variantStylesheet)
+        deepMerge({ ...variantStylesheet }, stylesheetVariant)
     );
 
     for (let [key, value] of Object.entries(variantSheet)) {
@@ -109,10 +135,10 @@ function theme(componentName, baseSheet = {}) {
         );
 
         // * Local takes precedence over global because of higher specificity
-        return defaultsDeep(
-            ...self.styles.map(func => func(props)),
+        return deepMerge(
+            { ...globalComponentStylesheet },
             baseStylesheet,
-            globalComponentStylesheet
+            ...self.styles.map(func => func(props))
         );
     }
 
