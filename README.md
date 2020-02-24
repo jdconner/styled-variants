@@ -493,7 +493,7 @@ const ButtonTheme = createTheme("Button").addVariant("size", size);
 
 const ThemedButton = styled.button(ButtonTheme);
 
-const StyledButton = styled(ButtonTheme)`
+const StyledButton = styled(ThemedButton)`
     * + * {
         div {
             margin-bottom: 20px;
