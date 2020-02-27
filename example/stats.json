@@ -1,14 +1,14 @@
 {
   "errors": [
-    "./src/index.js 5:16\nModule parse failed: Unexpected token (5:16)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n| import App from \"./App\";\n| \n> ReactDOM.render(<App />, document.getElementById(\"root\"));\n| "
+    "./src/index.js 7:16\nModule parse failed: Unexpected token (7:16)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n| console.log({ App });\n| \n> ReactDOM.render(<App />, document.getElementById(\"root\"));\n| "
   ],
   "warnings": [
     "configuration\nThe 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.\nYou can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/"
   ],
   "version": "4.41.0",
-  "hash": "aabc19802252e4e1e89e",
-  "time": 63,
-  "builtAt": 1582831633971,
+  "hash": "cf84586e5e8bae32abc9",
+  "time": 68,
+  "builtAt": 1582838870955,
   "publicPath": "",
   "outputPath": "/Users/jdconner/Work/styled-variants/example/dist",
   "assetsByChunkName": {
@@ -17,7 +17,7 @@
   "assets": [
     {
       "name": "main.js",
-      "size": 1255,
+      "size": 1252,
       "chunks": [
         0
       ],
@@ -59,14 +59,14 @@
       "rendered": true,
       "initial": true,
       "entry": true,
-      "size": 330,
+      "size": 325,
       "names": [
         "main"
       ],
       "files": [
         "main.js"
       ],
-      "hash": "9741678c48239b7105fe",
+      "hash": "be7eaf1964085e03edf0",
       "siblings": [],
       "parents": [],
       "children": [],
@@ -78,7 +78,7 @@
           "name": "./src/index.js",
           "index": 0,
           "index2": 0,
-          "size": 330,
+          "size": 325,
           "cacheable": true,
           "built": true,
           "optional": false,
@@ -91,8 +91,8 @@
           "issuerName": null,
           "issuerPath": null,
           "profile": {
-            "factory": 21,
-            "building": 7
+            "factory": 23,
+            "building": 8
           },
           "failed": true,
           "errors": 1,
@@ -115,7 +115,7 @@
             "ModuleConcatenation bailout: Module is not an ECMAScript module"
           ],
           "depth": 0,
-          "source": "throw new Error(\"Module parse failed: Unexpected token (5:16)\\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\\n| import App from \\\"./App\\\";\\n| \\n> ReactDOM.render(<App />, document.getElementById(\\\"root\\\"));\\n| \");"
+          "source": "throw new Error(\"Module parse failed: Unexpected token (7:16)\\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\\n| console.log({ App });\\n| \\n> ReactDOM.render(<App />, document.getElementById(\\\"root\\\"));\\n| \");"
         }
       ],
       "filteredModules": 0,
@@ -138,7 +138,7 @@
       "name": "./src/index.js",
       "index": 0,
       "index2": 0,
-      "size": 330,
+      "size": 325,
       "cacheable": true,
       "built": true,
       "optional": false,
@@ -151,8 +151,8 @@
       "issuerName": null,
       "issuerPath": null,
       "profile": {
-        "factory": 21,
-        "building": 7
+        "factory": 23,
+        "building": 8
       },
       "failed": true,
       "errors": 1,
@@ -175,7 +175,7 @@
         "ModuleConcatenation bailout: Module is not an ECMAScript module"
       ],
       "depth": 0,
-      "source": "throw new Error(\"Module parse failed: Unexpected token (5:16)\\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\\n| import App from \\\"./App\\\";\\n| \\n> ReactDOM.render(<App />, document.getElementById(\\\"root\\\"));\\n| \");"
+      "source": "throw new Error(\"Module parse failed: Unexpected token (7:16)\\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\\n| console.log({ App });\\n| \\n> ReactDOM.render(<App />, document.getElementById(\\\"root\\\"));\\n| \");"
     }
   ],
   "filteredModules": 0,
