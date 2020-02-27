@@ -71,17 +71,21 @@ See our Buttons [example code](https://github.com/jdconner/styled-variants/tree/
 If we expect to write our HTML like this:
 
 ```html
-<!-- applies global theme to each styled component -->
-<ThemeProvider theme={{ mode: 'dark' }}>
-    <!-- takes default/medium styles -->
-    <ThemedButton />
+return (
+    <!-- applies global theme to each styled component -->
+    <ThemeProvider theme={{ mode: 'dark' }}>
 
-    <!-- takes large styles -->
-    <ThemedButton size="large" />
+        <!-- takes default/medium styles -->
+        <ThemedButton isDisabled={isDisabled} />
 
-    <!-- takes small styles -->
-    <ThemedButton size="small" />
-</ThemeProvider>
+        <!-- takes large styles -->
+        <ThemedButton isDisabled={isDisabled} size="large" />
+
+        <!-- takes small styles -->
+        <ThemedButton isDisabled={isDisabled} size="small" />
+
+    </ThemeProvider>
+);
 ```
 
 The standard approach to define the "size" variant is to write a `styled-component` that uses ternary switches within the template literal definition:
@@ -114,10 +118,15 @@ export const Button = styled.button`
             : props.theme.mode === "dark"
             ? "black"
             : "transparent"};
+            
+    ${({ isDisabled }) => isDisabled ? `
+        opacity: 0.6;
+        pointer-events: none;
+    ` : ``}
 `;
 ```
 
-This fails to meet our objectives on two fronts: it is difficult to read and does not scale well.
+This fails to meet our objectives on mutiple fronts: it is difficult to read, does not scale well and is not maintainable.
 
 **_Imagine_** what it would look like if we had even more size options or if "size" affected more css attributes!
 
@@ -126,7 +135,7 @@ With `styled-variants`, we can easily see:
 1. What is included in each variant, and
 2. What the css values will be without having to parse multiple levels of conditionals:
 
-<img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/green/check-mark-3-xxl.png"> **EASIER TO READ**
+<img height="20px" width="20px" src="https://www.iconsdb.com/icons/preview/green/check-mark-3-xxl.png"> **HOLY COW I CAN SEE AGAIN**
 
 ```js
 import styled from "styled-components";
@@ -159,6 +168,10 @@ const ButtonTheme = createTheme("Button", {
     margin: "0.2em 0.6em",
     fontSize: "1rem",
     backgroundColor: "transparent",
+    isDisabled: {
+        opacity: 0.6,
+        pointerEvents: 'none',
+    },
 })
     .addVariant("size", size)
     .addGlobalVariant("mode", mode);
