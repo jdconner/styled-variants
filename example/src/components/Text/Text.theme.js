@@ -1,4 +1,4 @@
-import createTheme from "../../../../src"; // styled-variant
+import createTheme from "styled-variants"; // styled-variant
 import { APP_TYPES } from "../../App.constants";
 
 const appType = props => ({

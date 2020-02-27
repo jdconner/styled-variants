@@ -34,6 +34,7 @@ A scalable styled-component theming system that fully leverages JavaScript as a 
   - [Pseudo Class Support](#pseudo-class-support)
   - [Global Variant Theming](#global-variant-theming)
   - [Globally Theming a Specific Component Type](#globally-theming-a-specific-component-type)
+  - [Need to know](#need-to-know)
 - [FAQ](#faq)
   - [Does this package work with `styled-system`?](#does-this-package-work-with-styled-system)
   - [I have a super complex variant that I need to add, will this library support it?](#i-have-a-super-complex-variant-that-i-need-to-add-will-this-library-support-it)
@@ -459,6 +460,12 @@ const MyApp = () => {
 ```
 
 > Note: We do **NOT** currently support basic variants, but do have support for boolean variants.
+
+---
+
+### Need to know
+
+Position of keys matter!!
 
 ---
 

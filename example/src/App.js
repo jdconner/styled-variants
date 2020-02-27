@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "styled-components";
-
 import { GlobalStyle, AppContainer, Legend } from "./App.styled";
 import { colors } from "./App.theme";
 import { Buttons } from "./components/Buttons";
@@ -65,11 +64,11 @@ function App() {
     );
 }
 
-const Examples = React.memo(() => (
+const Examples = () => (
     <div>
         <h2>Examples</h2>
         <Buttons />
     </div>
-));
+);
 
 export default App;

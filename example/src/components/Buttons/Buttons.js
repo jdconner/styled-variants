@@ -1,12 +1,23 @@
 import React from "react";
+import { Button, H3 } from 'repaint';
 import { Container, ExampleContainer } from "../../App.styled";
 import { ThemedButton } from "./Buttons.styled";
 import Text from "../Text";
+
+// const { Button, H3 } = React.lazy(() => import("repaint"));
+
+console.log({ Button, H3 });
 
 export default () => {
     return (
         <ExampleContainer>
             <Container>
+                <React.Suspense fallback={<div>WOWOWO</div>}>
+                    <>
+                        <Button>Sup</Button>
+                        <H3>Whhaat</H3>
+                    </>
+                </React.Suspense>
                 <Text>Sizes:</Text>
                 <div>
                     <ThemedButton size="large">Large</ThemedButton>

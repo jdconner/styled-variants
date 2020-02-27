@@ -1,4 +1,4 @@
-import createTheme from "../../../../src"; // styled-variant
+import createTheme from "styled-variants";
 import shadeColor from "../../utils/shadeColor";
 import { APP_TYPES } from "../../App.constants";
 
@@ -72,20 +72,20 @@ const variant = {
     },
 };
 
-export const ButtonTheme = createTheme("Button", {
+export const ButtonTheme = createTheme("Button", ({ theme }) => ({
     isDisabled,
     "!isDisabled": {
         "&:hover": {
-            color: ({ theme }) => theme.colors.blue,
+            color: theme.colors.blue,
         },
         "&:hover, &:focus": {
-            borderColor: ({ theme }) => theme.colors.blue,
+            borderColor: theme.colors.blue,
         },
         "&:focus": {
-            color: ({ theme }) => theme.colors.deepPurple,
+            color: theme.colors.deepPurple,
         },
     },
-})
+}))
     .addVariant("size", size)
     .addVariant("variant", variant)
     .addGlobalVariant("appType", appType);
