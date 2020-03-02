@@ -204,7 +204,8 @@ const ButtonTheme = createTheme("Button").addVariant("type", {
         isActive: {
             boxShadow: "0px 0px 1px 1px blue",
             isPurple: {
-                backgroundColor: "purple",
+                /* if props.type === 'secondary' && isActive && isPurple, then backgroundColor = 'purple' */
+                backgroundColor: "purple", 
             },
         },
     },
